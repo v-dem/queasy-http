@@ -24,6 +24,7 @@ class Controller
         $path = str_replace('.', DIRECTORY_SEPARATOR, $name);
 
         $view = @file_get_contents(sprintf(self::VIEW_PATH_TEMPLATE, $path));
+
         if (false === $view) {
             throw new SystemException(sprintf('Can\'t locate view "%s".', $name));
         }
