@@ -1,2 +1,2 @@
-# php-queasy
-PHP Queasy - Quick and Easy framework for small projects
+# queasy
+PHP Queasy - Quick and Easy PHP framework for small projects
