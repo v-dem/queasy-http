@@ -48,5 +48,10 @@ class Controller
         return eval(' ?>' . $__queasyViewTemplate . '<?php ');
     }
 
+    private function load($include)
+    {
+        @include(sprintf(self::VIEW_PATH_TEMPLATE, str_replace('.', DIRECTORY_SEPARATOR, $include)));
+    }
+
 }
 
