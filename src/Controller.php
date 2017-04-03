@@ -14,6 +14,15 @@ class Controller
         $this->request = $request;
     }
 
+    public function get()
+    {
+    }
+
+    public function __invoke()
+    {
+        return call_user_func_array(array($this, 'get'), func_get_args());
+    }
+
     protected function request()
     {
         return $this->request;

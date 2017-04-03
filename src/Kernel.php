@@ -39,7 +39,8 @@ class Kernel
             if(method_exists($controller, $method)) {
                 $output = call_user_func_array(array($controller, $method), $this->route);
             } else {
-                throw new ApplicationException(sprintf('Method "%s" doesn\'t exists in class "%s".', $method, $controllerClass));
+                $output = call_user_func_array($controller, $this->route);
+                // throw new ApplicationException(sprintf('Method "%s" doesn\'t exists in class "%s".', $method, $controllerClass));
             }
 
             echo $output;
