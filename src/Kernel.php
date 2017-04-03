@@ -43,7 +43,7 @@ class Kernel
                 // throw new ApplicationException(sprintf('Method "%s" doesn\'t exists in class "%s".', $method, $controllerClass));
             }
 
-            echo $output;
+            echo $request->isAjax()? json_encode($output): $output;
         } catch (Exception $e) {
             Logger::error($e->getMessage());
         }
