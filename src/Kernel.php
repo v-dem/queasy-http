@@ -30,13 +30,17 @@ class Kernel
         try {
             $controllerClass = $this->resolveRoute($this->route);
             if (false === $controllerClass) {
-                throw new Exception(sprintf('Can\t resolve route.')); // TODO: Change to 404 response
+                throw new Exception('Can\t resolve route.'); // TODO: Change to 404 response
             }
 
             $controller = new $controllerClass($request);
             $method = strtolower($this->method);
 
-            $output = call_user_func_array(array($controller, $method), $this->route);
+            if(method_exists($controller, $method)) {
+                $output = call_user_func_array(array($controller, $method), $this->route);
+            } else {
+                throw new ApplicationException(sprintf('Method "%s" doesn\'t exists in class "%s".', $method, $controllerClass));
+            }
 
             echo $output;
         } catch (Exception $e) {
