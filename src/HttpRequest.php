@@ -54,6 +54,11 @@ class HttpRequest
         }
     }
 
+    public function isAjax()
+    {
+        return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+    }
+
     private function trimInput(array $input)
     {
         $result = array();
