@@ -28,6 +28,8 @@ class Kernel
     public function handle(HttpRequest $request)
     {
         try {
+            $this->before();
+
             $controllerClass = $this->resolveRoute($this->route);
             if (false === $controllerClass) {
                 throw new Exception('Can\t resolve route.'); // TODO: Change to 404 response
@@ -43,10 +45,24 @@ class Kernel
                 // throw new ApplicationException(sprintf('Method "%s" doesn\'t exists in class "%s".', $method, $controllerClass));
             }
 
-            echo $request->isAjax()? json_encode($output): $output;
-        } catch (Exception $e) {
+            if ($request->isAjax()) {
+                echo json_encode($output);
+            } else {
+                echo $output;
+            }
+
+            $this->after();
+        } catch (Exception $e) { // TODO: Improve exceptions handling
             Logger::error($e->getMessage());
         }
+    }
+
+    protected function before()
+    {
+    }
+
+    protected function after()
+    {
     }
 
     private function resolveRoute(array $route, $path = self::BASE_CONTROLLER_PATH, $namespace = self::BASE_CONTROLLER_NAMESPACE)

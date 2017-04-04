@@ -50,6 +50,7 @@ class Controller
 
     private function load($include)
     {
+        // TODO: Remove duplicate code (the same as in view() method)
         @include(sprintf(self::VIEW_PATH_TEMPLATE, str_replace('.', DIRECTORY_SEPARATOR, $include)));
     }
 
