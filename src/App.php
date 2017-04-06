@@ -4,7 +4,7 @@ namespace queasy;
 
 use queasy\log\Logger;
 
-class Kernel
+class App
 {
 
     const BASE_CONTROLLER_PATH = 'app' . DIRECTORY_SEPARATOR . 'controllers';
@@ -25,6 +25,12 @@ class Kernel
         $this->method = $method;
     }
 
+    /**
+     * Handles request
+     * @param \queasy\HttpRequest $request Request object
+     * @throws FileNotFoundException File not found
+     * @return null
+     */
     public function handle(HttpRequest $request)
     {
         try {
