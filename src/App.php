@@ -44,7 +44,7 @@ class App
             $controller = new $controllerClass($request);
             $method = strtolower($this->method);
 
-            if(method_exists($controller, $method)) {
+            if (method_exists($controller, $method)) {
                 $output = call_user_func_array(array($controller, $method), $this->route);
             } else {
                 $output = call_user_func_array($controller, $this->route);
@@ -74,7 +74,7 @@ class App
     private function resolveRoute(array $route, $path = self::BASE_CONTROLLER_PATH, $namespace = self::BASE_CONTROLLER_NAMESPACE)
     {
         $token = array_shift($route);
-        if(!empty($token)) {
+        if (!empty($token)) {
             // Look for controller in subfolder
             $newPath = $path . DIRECTORY_SEPARATOR . $token;
             if (@is_dir($newPath)) {
