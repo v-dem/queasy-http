@@ -27,10 +27,10 @@ Queasy PHP framework was developed to help with small projects whose don't requi
 * Much faster than other micro frameworks.
 
 ### Easy
-* No complex things like DI or IoC used. Just a standard OOP. So debugging is very easy.
+* No complex things like DI or IoC used. Just a standard OOP. So debugging is very easy and source code is clean to understand.
 
 ### Small
-* Just a several tens of files.
+* Just a several tens of files. And they are loaded only when needed.
 
 ### Functional
 * Supports complex configurations with ability to load from different files.
