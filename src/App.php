@@ -37,9 +37,9 @@ class App
             $method = strtolower($this->method);
 
             if (method_exists($controller, $method)) {
-                $output = call_user_func_array(array($controller, $method), $route->route());
+                $output = call_user_func_array(array($controller, $method), $route->get());
             } else {
-                $output = call_user_func_array($controller, $route->route());
+                $output = call_user_func_array($controller, $route->get());
                 // throw new ApplicationException(sprintf('Method "%s" doesn\'t exists in class "%s".', $method, $controllerClass));
             }
 

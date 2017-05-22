@@ -61,5 +61,10 @@ class Route
         return false;
     }
 
+    public function get()
+    {
+        return $this->route;
+    }
+
 }
 
