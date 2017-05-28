@@ -1,15 +1,15 @@
 <?php
 
-require_once(VENDOR_DIR . DIRECTORY_SEPARATOR . 'autoload.php');
+require_once(VENDOR_PATH . DIRECTORY_SEPARATOR . 'autoload.php');
 
-chdir(QUEASY_DIR);
+chdir(QUEASY_PATH);
 
 $routeStr = preg_replace(
     '/\?.*$/',
     '',
     str_replace(
         $queasyUrl = str_replace(
-            basename(__FILE__),
+            basename(INDEX_PATH),
             '',
             $_SERVER['SCRIPT_NAME']
         ),
