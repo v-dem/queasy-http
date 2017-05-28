@@ -1,6 +1,6 @@
 <?php
 
-require_once(VENDOR_PATH . DIRECTORY_SEPARATOR . 'autoload.php');
+require_once(sprintf('%s%s%s', VENDOR_PATH, DIRECTORY_SEPARATOR, 'autoload.php'));
 
 chdir(QUEASY_PATH);
 
