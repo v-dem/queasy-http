@@ -2,12 +2,12 @@
 
 namespace queasy\i18n;
 
-trait LangTrait
+trait TransTrait
 {
 
     protected static function trans($key, array $vars = null, $lang = null)
     {
-        return Lang::getInstance()->trans(__CLASS__ . '.' . $key, $vars, $lang);
+        return Trans::getInstance()->trans(__CLASS__ . '.' . $key, $vars, $lang);
     }
 
 }
