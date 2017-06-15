@@ -9,10 +9,6 @@ class Trans
 
     use ConfigTrait;
 
-    const DEFAULT_LANGUAGE = 'en';
-
-    const LANG_PATH_TEMPLATE = 'resources' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . '%s' . DIRECTORY_SEPARATOR . '%s.ini';
-
     private static $instance = null;
 
     public static function getInstance()
@@ -31,7 +27,7 @@ class Trans
 
     private function __construct()
     {
-        $this->defaultLang = self::config()->get('default', self::DEFAULT_LANGUAGE);
+        $this->defaultLang = self::config()->need('default');
         $this->lang = $this->defaultLang;
     }
 
@@ -79,12 +75,12 @@ class Trans
         }
     }
 
-    public function get()
+    public function getLang()
     {
         return $this->lang;
     }
 
-    public function set($lang)
+    public function setLang($lang)
     {
         $this->lang = $lang;
     }
