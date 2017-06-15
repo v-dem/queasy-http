@@ -32,5 +32,5 @@ $appClass = queasy\Loader::load('app');
 $app = new $appClass($route, $_SERVER['REQUEST_METHOD']);
 $app->handle($request);
 
-queasy\log\Logger::info(sprintf('Script execution time: %s', microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']));
+queasy\log\Logger::info(sprintf('Execution time: %s', microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']));
 

@@ -4,7 +4,7 @@ namespace queasy\i18n;
 
 use queasy\config\ConfigTrait;
 
-class Lang
+class Trans
 {
 
     use ConfigTrait;
