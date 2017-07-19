@@ -8,59 +8,52 @@ class App
 {
 
     private $route;
-    private $method;
 
-    public function __construct(array $route, $method)
+    /**
+     * Constructor
+     * @param array $route URL parts array splitted by "/" char
+     * @param string Request HTTP method
+     * @return \queasy\App
+     */
+    public function __construct(array $route)
     {
         $this->route = $route;
-        $this->method = $method;
     }
 
     /**
      * Handles request
      * @param \queasy\HttpRequest $request Request object
-     * @throws FileNotFoundException File not found
-     * @return null
+     * @return string Response
      */
     public function handle(HttpRequest $request)
     {
         try {
-            $this->before();
+            $routeClass = Loader::load('route');
 
-            $route = new Route($this->route, $this->method);
-            $controllerClass = $route->resolve();
-            if (false === $controllerClass) {
+            $route = new $routeClass($this->route, $request->method());
+            $controllerClassMethod = $route->resolve();
+            if (false === $controllerClassMethod) {
                 throw new Exception('Can\t resolve route.'); // TODO: Change to 404 response
             }
 
-            $controller = new $controllerClass($request);
-            $method = strtolower($this->method);
+            $controllerClass = array_shift($controllerClassMethod);
+            $controllerMethod = array_shift($controllerClassMethod);
 
-            if (method_exists($controller, $method)) {
-                $output = call_user_func_array(array($controller, $method), $route->get());
+            $controller = new $controllerClass($request);
+            if (method_exists($controller, $controllerMethod)) {
+                $output = call_user_func_array(array($controller, $controllerMethod), $route->get());
             } else {
-                $output = call_user_func_array($controller, $route->get());
-                // throw new ApplicationException(sprintf('Method "%s" doesn\'t exists in class "%s".', $method, $controllerClass));
+                throw new ApplicationException(sprintf('Method "%s" doesn\'t exists in class "%s".', $method, $controllerClass)); // TODO: Change to 404 response
             }
 
             if ($request->isAjax()) {
-                echo json_encode($output);
+                return json_encode($output);
             } else {
-                echo $output;
+                return $output;
             }
-
-            $this->after();
         } catch (Exception $e) { // TODO: Improve exceptions handling
             Logger::error($e->getMessage());
         }
-    }
-
-    protected function before()
-    {
-    }
-
-    protected function after()
-    {
     }
 
 }

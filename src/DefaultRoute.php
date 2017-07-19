@@ -2,9 +2,7 @@
 
 namespace queasy;
 
-use queasy\log\Logger;
-
-class Route
+class DefaultRoute implements IRoute
 {
 
     const BASE_CONTROLLER_PATH = 'app' . DIRECTORY_SEPARATOR . 'controllers';
@@ -22,10 +20,23 @@ class Route
     public function __construct(array $route, $method)
     {
         $this->route = $route;
-        $this->method = $method;
+        $this->method = strtolower($method);
     }
 
-    public function resolve(array $route = null, $path = self::BASE_CONTROLLER_PATH, $namespace = self::BASE_CONTROLLER_NAMESPACE)
+    public function resolve(array $route = null)
+    {
+        $result = $this->resolveRecursive($route);
+        if (!is_null($result)) {
+            $result = array(
+                $controllerClass,
+                $this->method
+            );
+        }
+
+        return $result;
+    }
+
+    protected function resolveRecursive(array $route = null, $path = self::BASE_CONTROLLER_PATH, $namespace = self::BASE_CONTROLLER_NAMESPACE)
     {
         if (is_null($route)) {
             $route = $this->route;
@@ -47,7 +58,7 @@ class Route
                 if (@file_exists(sprintf(self::CONTROLLER_PATH_TEMPLATE, $path, ucfirst($token)))) {
                     $this->route = $route;
 
-                    return sprintf(self::CONTROLLER_NAME_TEMPLATE, $namespace, ucfirst($token));
+                    return sprintf(self::CONTROLLER_NAME_TEMPLATE, $namespace, ucfirst($token);
                 }
             }
         }

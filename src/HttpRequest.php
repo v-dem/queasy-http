@@ -9,13 +9,15 @@ class HttpRequest
     private $post;
     private $files;
     private $session;
+    private $method;
 
-    public function __construct(array $get, array $post, array $files, array $session)
+    public function __construct(array $get, array $post, array $files, array $session, $method)
     {
         $this->get = $this->trimInput($get);
         $this->post = $this->trimInput($post);
         $this->files = $files;
         $this->session = $session;
+        $this->method = $method;
     }
 
     public function get($name = null)
@@ -57,6 +59,11 @@ class HttpRequest
     public function isAjax()
     {
         return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+    }
+
+    public function method()
+    {
+        return $this->method;
     }
 
     private function trimInput(array $input)

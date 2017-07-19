@@ -14,18 +14,13 @@ class Controller
         $this->request = $request;
     }
 
-    public function get()
+    public function __get($property)
     {
-    }
-
-    public function __invoke()
-    {
-        return call_user_func_array(array($this, 'get'), func_get_args());
-    }
-
-    protected function request()
-    {
-        return $this->request;
+        if ('request' === $property) {
+            return $this->request;
+        } else {
+            throw new SystemException(sprintf('Property "%s" missing in class "%s".', $property, get_class($this)));
+        }
     }
 
     protected function view($name, array $vars = array())
