@@ -2,7 +2,7 @@
 
 namespace queasy;
 
-class DefaultRoute implements IRoute
+class Route implements RouteInterface
 {
 
     const BASE_CONTROLLER_PATH = 'app' . DIRECTORY_SEPARATOR . 'controllers';

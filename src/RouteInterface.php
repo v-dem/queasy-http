@@ -2,7 +2,7 @@
 
 namespace queasy;
 
-interface IRoute
+interface RouteInterface
 {
 
     public function resolve(array $route = null);
