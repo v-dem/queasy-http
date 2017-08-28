@@ -9,11 +9,25 @@ class Controller
 
     private $request;
 
+    /**
+     * Constructor
+     *
+     * @param \queasy\HttpRequest $request Request object
+     *
+     * @return string Response
+     */
     public function __construct(HttpRequest $request)
     {
         $this->request = $request;
     }
 
+    /**
+     * Getter magic method, used to get request object
+     *
+     * @param string $property Property name
+     *
+     * @return \queasy\HttpRequest Request object
+     */
     public function __get($property)
     {
         if ('request' === $property) {
@@ -23,6 +37,14 @@ class Controller
         }
     }
 
+    /**
+     * Generates and returns view
+     *
+     * @param string $name View template path, folders are separated by a dot sign
+     * @param array $vars Variables to be passed into a view, defaults to an empty array
+     *
+     * @return string Generated view code
+     */
     protected function view($name, array $vars = array())
     {
         $path = str_replace('.', DIRECTORY_SEPARATOR, $name);
@@ -35,17 +57,42 @@ class Controller
         return $this->generateView($view, $vars);
     }
 
+    /**
+     * Generates view from a template
+     *
+     * @param string $__queasyViewTemplate View template code
+     * @param array $__queasyViewTemplateVars Variables to be passed into a view, defaults to an empty array
+     *
+     * @return string Generated view code
+     */
     private function generateView($__queasyViewTemplate, array $__queasyViewTemplateVars = array())
     {
         extract($__queasyViewTemplateVars);
 
-        return eval(' ?>' . $__queasyViewTemplate . '<?php ');
+        try {
+            $output = eval(' ?>' . $__queasyViewTemplate . '<?php ');
+            if (false === $output) {
+                // TODO: Handle parse error (PHP5)
+            }
+
+            return $output;
+        } catch (Throwable $e) {
+            // TODO: Handle parse error if $e is an instance of ParseError class (PHP7)
+        }
     }
 
-    private function load($include)
+    /**
+     * Includes another view into current
+     *
+     * @param string $include Include view template name, folders are separated by a dot sign
+     * @param array $__queasyViewTemplateVars Variables to be passed into a view, defaults to an empty array
+     *
+     * @return string Generated view code
+     */
+    private function load($__queasyIncludeView, array $__queasyViewTemplateVars = array())
     {
         // TODO: Remove duplicate code (the same as in view() method)
-        @include(sprintf(self::VIEW_PATH_TEMPLATE, str_replace('.', DIRECTORY_SEPARATOR, $include)));
+        @include(sprintf(self::VIEW_PATH_TEMPLATE, str_replace('.', DIRECTORY_SEPARATOR, $__queasyIncludeView)));
     }
 
 }

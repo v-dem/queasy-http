@@ -20,10 +20,19 @@ class HttpRequest
         $this->method = $method;
     }
 
+    public function __get($property)
+    {
+        if (method_exists($this, $property)) {
+            return $this->$property();
+        } else {
+            throw new SystemException(sprintf('Property "%s" missing in class "%s".', $property, get_class($this)));
+        }
+    }
+
     public function get($name = null)
     {
         if (is_null($name)) {
-            return $get;
+            return $this->get;
         } else {
             return isset($this->get[$name])? $this->get[$name]: null;
         }

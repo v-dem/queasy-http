@@ -11,8 +11,10 @@ class App
 
     /**
      * Constructor
+     *
      * @param array $route URL parts array splitted by "/" char
      * @param string Request HTTP method
+     *
      * @return \queasy\App
      */
     public function __construct(array $route)
@@ -22,7 +24,9 @@ class App
 
     /**
      * Handles request
+     *
      * @param \queasy\HttpRequest $request Request object
+     *
      * @return string Response
      */
     public function handle(HttpRequest $request)
