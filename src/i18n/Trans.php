@@ -11,7 +11,7 @@ class Trans
 
     private static $instance = null;
 
-    public static function getInstance()
+    public static function instance()
     {
         if (is_null(self::$instance)) {
             self::$instance = new self();
