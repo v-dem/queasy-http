@@ -13,6 +13,7 @@
         "v-dem/queasy-config": "dev-master",
         "v-dem/queasy-log": "dev-master",
         "v-dem/queasy-db": "dev-master"
+        "v-dem/queasy-validation": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "~5.7"
