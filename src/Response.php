@@ -1,6 +1,8 @@
 <?php
 
-namespace Psr\Http\Message;
+namespace queasy\http;
+
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Representation of an outgoing, server-side response.
@@ -17,7 +19,7 @@ namespace Psr\Http\Message;
  * be implemented such that they retain the internal state of the current
  * message and return an instance that contains the changed state.
  */
-interface ResponseInterface extends MessageInterface
+class Response extends Message implements ResponseInterface
 {
     /**
      * Gets the response status code.
@@ -27,7 +29,10 @@ interface ResponseInterface extends MessageInterface
      *
      * @return int Status code.
      */
-    public function getStatusCode();
+    public function getStatusCode()
+    {
+        
+    }
 
     /**
      * Return an instance with the specified status code and, optionally, reason phrase.
@@ -49,7 +54,10 @@ interface ResponseInterface extends MessageInterface
      * @return static
      * @throws \InvalidArgumentException For invalid status code arguments.
      */
-    public function withStatus($code, $reasonPhrase = '');
+    public function withStatus($code, $reasonPhrase = '')
+    {
+        
+    }
 
     /**
      * Gets the response reason phrase associated with the status code.
@@ -64,5 +72,8 @@ interface ResponseInterface extends MessageInterface
      * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      * @return string Reason phrase; must return an empty string if none present.
      */
-    public function getReasonPhrase();
+    public function getReasonPhrase()
+    {
+        
+    }
 }

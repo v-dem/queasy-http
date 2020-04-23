@@ -1,6 +1,9 @@
 <?php
 
-namespace Psr\Http\Message;
+namespace queasy\http;
+
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\UriInterface;
 
 /**
  * Representation of an outgoing, client-side request.
@@ -21,7 +24,7 @@ namespace Psr\Http\Message;
  * be implemented such that they retain the internal state of the current
  * message and return an instance that contains the changed state.
  */
-interface RequestInterface extends MessageInterface
+class Request extends Message implements RequestInterface
 {
     /**
      * Retrieves the message's request target.
@@ -39,7 +42,10 @@ interface RequestInterface extends MessageInterface
      *
      * @return string
      */
-    public function getRequestTarget();
+    public function getRequestTarget()
+    {
+        
+    }
 
     /**
      * Return an instance with the specific request-target.
@@ -58,14 +64,20 @@ interface RequestInterface extends MessageInterface
      * @param mixed $requestTarget
      * @return static
      */
-    public function withRequestTarget($requestTarget);
+    public function withRequestTarget($requestTarget)
+    {
+        
+    }
 
     /**
      * Retrieves the HTTP method of the request.
      *
      * @return string Returns the request method.
      */
-    public function getMethod();
+    public function getMethod()
+    {
+        
+    }
 
     /**
      * Return an instance with the provided HTTP method.
@@ -82,7 +94,10 @@ interface RequestInterface extends MessageInterface
      * @return static
      * @throws \InvalidArgumentException for invalid HTTP methods.
      */
-    public function withMethod($method);
+    public function withMethod($method)
+    {
+        
+    }
 
     /**
      * Retrieves the URI instance.
@@ -93,7 +108,10 @@ interface RequestInterface extends MessageInterface
      * @return UriInterface Returns a UriInterface instance
      *     representing the URI of the request.
      */
-    public function getUri();
+    public function getUri()
+    {
+        
+    }
 
     /**
      * Returns an instance with the provided URI.
@@ -125,5 +143,8 @@ interface RequestInterface extends MessageInterface
      * @param bool $preserveHost Preserve the original state of the Host header.
      * @return static
      */
-    public function withUri(UriInterface $uri, $preserveHost = false);
+    public function withUri(UriInterface $uri, $preserveHost = false)
+    {
+        
+    }
 }

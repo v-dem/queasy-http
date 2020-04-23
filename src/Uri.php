@@ -1,6 +1,8 @@
 <?php
 
-namespace Psr\Http\Message;
+namespace queasy\http;
+
+use Psr\Http\Message\UriInterface;
 
 /**
  * Value object representing a URI.
@@ -22,7 +24,7 @@ namespace Psr\Http\Message;
  *
  * @link http://tools.ietf.org/html/rfc3986 (the URI specification)
  */
-interface UriInterface
+class Uri implements UriInterface
 {
     /**
      * Retrieve the scheme component of the URI.
@@ -38,7 +40,10 @@ interface UriInterface
      * @see https://tools.ietf.org/html/rfc3986#section-3.1
      * @return string The URI scheme.
      */
-    public function getScheme();
+    public function getScheme()
+    {
+        
+    }
 
     /**
      * Retrieve the authority component of the URI.
@@ -58,7 +63,10 @@ interface UriInterface
      * @see https://tools.ietf.org/html/rfc3986#section-3.2
      * @return string The URI authority, in "[user-info@]host[:port]" format.
      */
-    public function getAuthority();
+    public function getAuthority()
+    {
+        
+    }
 
     /**
      * Retrieve the user information component of the URI.
@@ -75,7 +83,10 @@ interface UriInterface
      *
      * @return string The URI user information, in "username[:password]" format.
      */
-    public function getUserInfo();
+    public function getUserInfo()
+    {
+        
+    }
 
     /**
      * Retrieve the host component of the URI.
@@ -88,7 +99,10 @@ interface UriInterface
      * @see http://tools.ietf.org/html/rfc3986#section-3.2.2
      * @return string The URI host.
      */
-    public function getHost();
+    public function getHost()
+    {
+        
+    }
 
     /**
      * Retrieve the port component of the URI.
@@ -105,7 +119,10 @@ interface UriInterface
      *
      * @return null|int The URI port.
      */
-    public function getPort();
+    public function getPort()
+    {
+        
+    }
 
     /**
      * Retrieve the path component of the URI.
@@ -132,7 +149,10 @@ interface UriInterface
      * @see https://tools.ietf.org/html/rfc3986#section-3.3
      * @return string The URI path.
      */
-    public function getPath();
+    public function getPath()
+    {
+        
+    }
 
     /**
      * Retrieve the query string of the URI.
@@ -154,7 +174,10 @@ interface UriInterface
      * @see https://tools.ietf.org/html/rfc3986#section-3.4
      * @return string The URI query string.
      */
-    public function getQuery();
+    public function getQuery()
+    {
+        
+    }
 
     /**
      * Retrieve the fragment component of the URI.
@@ -172,7 +195,10 @@ interface UriInterface
      * @see https://tools.ietf.org/html/rfc3986#section-3.5
      * @return string The URI fragment.
      */
-    public function getFragment();
+    public function getFragment()
+    {
+        
+    }
 
     /**
      * Return an instance with the specified scheme.
@@ -189,7 +215,10 @@ interface UriInterface
      * @return static A new instance with the specified scheme.
      * @throws \InvalidArgumentException for invalid or unsupported schemes.
      */
-    public function withScheme($scheme);
+    public function withScheme($scheme)
+    {
+        
+    }
 
     /**
      * Return an instance with the specified user information.
@@ -205,7 +234,10 @@ interface UriInterface
      * @param null|string $password The password associated with $user.
      * @return static A new instance with the specified user information.
      */
-    public function withUserInfo($user, $password = null);
+    public function withUserInfo($user, $password = null)
+    {
+        
+    }
 
     /**
      * Return an instance with the specified host.
@@ -219,7 +251,10 @@ interface UriInterface
      * @return static A new instance with the specified host.
      * @throws \InvalidArgumentException for invalid hostnames.
      */
-    public function withHost($host);
+    public function withHost($host)
+    {
+        
+    }
 
     /**
      * Return an instance with the specified port.
@@ -238,7 +273,10 @@ interface UriInterface
      * @return static A new instance with the specified port.
      * @throws \InvalidArgumentException for invalid ports.
      */
-    public function withPort($port);
+    public function withPort($port)
+    {
+        
+    }
 
     /**
      * Return an instance with the specified path.
@@ -262,7 +300,10 @@ interface UriInterface
      * @return static A new instance with the specified path.
      * @throws \InvalidArgumentException for invalid paths.
      */
-    public function withPath($path);
+    public function withPath($path)
+    {
+        
+    }
 
     /**
      * Return an instance with the specified query string.
@@ -279,7 +320,10 @@ interface UriInterface
      * @return static A new instance with the specified query string.
      * @throws \InvalidArgumentException for invalid query strings.
      */
-    public function withQuery($query);
+    public function withQuery($query)
+    {
+        
+    }
 
     /**
      * Return an instance with the specified URI fragment.
@@ -295,7 +339,10 @@ interface UriInterface
      * @param string $fragment The fragment to use with the new instance.
      * @return static A new instance with the specified fragment.
      */
-    public function withFragment($fragment);
+    public function withFragment($fragment)
+    {
+        
+    }
 
     /**
      * Return the string representation as a URI reference.
@@ -320,5 +367,8 @@ interface UriInterface
      * @see http://tools.ietf.org/html/rfc3986#section-4.1
      * @return string
      */
-    public function __toString();
+    public function __toString()
+    {
+        
+    }
 }
