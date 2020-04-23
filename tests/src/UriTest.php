@@ -58,5 +58,208 @@ class UriTest extends TestCase
         $this->assertEquals('a=123&b=sdasad', $uri->getQuery());
         $this->assertEquals('here', $uri->getFragment());
     }
+
+    public function testWithoutAuthority()
+    {
+        $uri = new Uri('http://example.com:8080/path/to/index.php?a=123&b=sdasad#here');
+
+        $this->assertEquals('http', $uri->getScheme());
+        $this->assertEquals('', $uri->getAuthority());
+        $this->assertEquals('', $uri->getUserInfo());
+        $this->assertEquals('example.com', $uri->getHost());
+        $this->assertEquals('8080', $uri->getPort());
+        $this->assertEquals('/path/to/index.php', $uri->getPath());
+        $this->assertEquals('a=123&b=sdasad', $uri->getQuery());
+        $this->assertEquals('here', $uri->getFragment());
+    }
+
+    public function testWithoutPassword()
+    {
+        $uri = new Uri('http://john.doe@example.com:8080/path/to/index.php?a=123&b=sdasad#here');
+
+        $this->assertEquals('http', $uri->getScheme());
+        $this->assertEquals('john.doe@example.com:8080', $uri->getAuthority());
+        $this->assertEquals('john.doe', $uri->getUserInfo());
+        $this->assertEquals('example.com', $uri->getHost());
+        $this->assertEquals('8080', $uri->getPort());
+        $this->assertEquals('/path/to/index.php', $uri->getPath());
+        $this->assertEquals('a=123&b=sdasad', $uri->getQuery());
+        $this->assertEquals('here', $uri->getFragment());
+    }
+
+    public function testWithoutPort()
+    {
+        $uri = new Uri('http://john.doe@example.com/path/to/index.php?a=123&b=sdasad#here');
+
+        $this->assertEquals('http', $uri->getScheme());
+        $this->assertEquals('john.doe@example.com', $uri->getAuthority());
+        $this->assertEquals('john.doe', $uri->getUserInfo());
+        $this->assertEquals('example.com', $uri->getHost());
+        $this->assertNull($uri->getPort());
+        $this->assertEquals('/path/to/index.php', $uri->getPath());
+        $this->assertEquals('a=123&b=sdasad', $uri->getQuery());
+        $this->assertEquals('here', $uri->getFragment());
+    }
+
+    public function testWithoutScheme()
+    {
+        $uri = new Uri('//john.doe@example.com/path/to/index.php?a=123&b=sdasad#here');
+
+        $this->assertEquals('', $uri->getScheme());
+        $this->assertEquals('john.doe@example.com', $uri->getAuthority());
+        $this->assertEquals('john.doe', $uri->getUserInfo());
+        $this->assertEquals('example.com', $uri->getHost());
+        $this->assertNull($uri->getPort());
+        $this->assertEquals('/path/to/index.php', $uri->getPath());
+        $this->assertEquals('a=123&b=sdasad', $uri->getQuery());
+        $this->assertEquals('here', $uri->getFragment());
+    }
+
+    public function testWithoutFragment()
+    {
+        $uri = new Uri('//john.doe@example.com/path/to/index.php?a=123&b=sdasad');
+
+        $this->assertEquals('', $uri->getScheme());
+        $this->assertEquals('john.doe@example.com', $uri->getAuthority());
+        $this->assertEquals('john.doe', $uri->getUserInfo());
+        $this->assertEquals('example.com', $uri->getHost());
+        $this->assertNull($uri->getPort());
+        $this->assertEquals('/path/to/index.php', $uri->getPath());
+        $this->assertEquals('a=123&b=sdasad', $uri->getQuery());
+        $this->assertEquals('', $uri->getFragment());
+    }
+
+    public function testWithoutQuery()
+    {
+        $uri = new Uri('//john.doe@example.com/path/to/index.php');
+
+        $this->assertEquals('', $uri->getScheme());
+        $this->assertEquals('john.doe@example.com', $uri->getAuthority());
+        $this->assertEquals('john.doe', $uri->getUserInfo());
+        $this->assertEquals('example.com', $uri->getHost());
+        $this->assertNull($uri->getPort());
+        $this->assertEquals('/path/to/index.php', $uri->getPath());
+        $this->assertEquals('', $uri->getQuery());
+        $this->assertEquals('', $uri->getFragment());
+    }
+
+    public function testWithoutPath1()
+    {
+        $uri = new Uri('//john.doe@example.com/');
+
+        $this->assertEquals('', $uri->getScheme());
+        $this->assertEquals('john.doe@example.com', $uri->getAuthority());
+        $this->assertEquals('john.doe', $uri->getUserInfo());
+        $this->assertEquals('example.com', $uri->getHost());
+        $this->assertNull($uri->getPort());
+        $this->assertEquals('/', $uri->getPath());
+        $this->assertEquals('', $uri->getQuery());
+        $this->assertEquals('', $uri->getFragment());
+    }
+
+    public function testWithoutPath2()
+    {
+        $uri = new Uri('//john.doe@example.com');
+
+        $this->assertEquals('', $uri->getScheme());
+        $this->assertEquals('john.doe@example.com', $uri->getAuthority());
+        $this->assertEquals('john.doe', $uri->getUserInfo());
+        $this->assertEquals('example.com', $uri->getHost());
+        $this->assertNull($uri->getPort());
+        $this->assertEquals('', $uri->getPath());
+        $this->assertEquals('', $uri->getQuery());
+        $this->assertEquals('', $uri->getFragment());
+    }
+
+    public function testWithoutPathWithFragment()
+    {
+        $uri = new Uri('//john.doe@example.com#here');
+
+        $this->assertEquals('', $uri->getScheme());
+        $this->assertEquals('john.doe@example.com', $uri->getAuthority());
+        $this->assertEquals('john.doe', $uri->getUserInfo());
+        $this->assertEquals('example.com', $uri->getHost());
+        $this->assertNull($uri->getPort());
+        $this->assertEquals('', $uri->getPath());
+        $this->assertEquals('', $uri->getQuery());
+        $this->assertEquals('here', $uri->getFragment());
+    }
+
+    public function testWithPathAndFragmentOnly()
+    {
+        $uri = new Uri('example.com#here');
+
+        $this->assertEquals('', $uri->getScheme());
+        $this->assertEquals('', $uri->getAuthority());
+        $this->assertEquals('', $uri->getUserInfo());
+        $this->assertEquals('', $uri->getHost());
+        $this->assertNull($uri->getPort());
+        $this->assertEquals('example.com', $uri->getPath());
+        $this->assertEquals('', $uri->getQuery());
+        $this->assertEquals('here', $uri->getFragment());
+    }
+
+    public function testChangeScheme()
+    {
+        $uri = new Uri('http://example.com');
+        $newUri = $uri->withScheme('https');
+
+        $this->assertEquals('http', $uri->getScheme());
+        $this->assertEquals('https', $newUri->getScheme());
+    }
+
+    public function testChangeUserAndPassword()
+    {
+        $uri = new Uri('http://user:password@example.com');
+        $newUri = $uri->withUserInfo('newuser', 'newpassword');
+
+        $this->assertEquals('user:password', $uri->getUserInfo());
+        $this->assertEquals('newuser:newpassword', $newUri->getUserInfo());
+    }
+
+    public function testChangeHost()
+    {
+        $uri = new Uri('http://example.com:8080/road/to/nowhere?a=12&b=7#here');
+        $newUri = $uri->withHost('my.example.com');
+
+        $this->assertEquals('example.com', $uri->getHost());
+        $this->assertEquals('my.example.com', $newUri->getHost());
+    }
+
+    public function testChangePort()
+    {
+        $uri = new Uri('http://example.com:8080/road/to/nowhere?a=12&b=7#here');
+        $newUri = $uri->withPort('8888');
+
+        $this->assertEquals('8080', $uri->getPort());
+        $this->assertEquals('8888', $newUri->getPort());
+    }
+
+    public function testChangePath()
+    {   // FIXME:
+        $uri = new Uri('http://example.com:8080/road/to/nowhere?a=12&b=7#here');
+        $newUri = $uri->withPath('/my/new/path');
+
+        $this->assertEquals('/road/to/nowhere', $uri->getPath());
+        $this->assertEquals('/my/new/path', $newUri->getPath());
+    }
+
+    public function testChangeQuery()
+    {
+        $uri = new Uri('http://example.com:8080/road/to/nowhere?a=12&b=7#here');
+        $newUri = $uri->withQuery('x=123');
+
+        $this->assertEquals('a=12&b=7', $uri->getQuery());
+        $this->assertEquals('x=123', $newUri->getQuery());
+    }
+
+    public function testChangeFragment()
+    {
+        $uri = new Uri('http://example.com:8080/road/to/nowhere?a=12&b=7#here');
+        $newUri = $uri->withFragment('somewhere');
+
+        $this->assertEquals('here', $uri->getFragment());
+        $this->assertEquals('somewhere', $newUri->getFragment());
+    }
 }
 

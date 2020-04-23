@@ -292,7 +292,11 @@ class Uri implements UriInterface
      */
     public function withUserInfo($user, $password = null)
     {
-        
+        $uriParts = (array) $this;
+        $uriParts['user'] = $user;
+        $uriParts['pass'] = $password;
+
+        return new self($uriParts);
     }
 
     /**
@@ -309,7 +313,10 @@ class Uri implements UriInterface
      */
     public function withHost($host)
     {
-        
+        $uriParts = (array) $this;
+        $uriParts['host'] = $host;
+
+        return new self($uriParts);
     }
 
     /**
@@ -331,7 +338,10 @@ class Uri implements UriInterface
      */
     public function withPort($port)
     {
-        
+        $uriParts = (array) $this;
+        $uriParts['port'] = $port;
+
+        return new self($uriParts);
     }
 
     /**
@@ -358,7 +368,10 @@ class Uri implements UriInterface
      */
     public function withPath($path)
     {
-        
+        $uriParts = (array) $this;
+        $uriParts['path'] = $path;
+
+        return new self($uriParts);
     }
 
     /**
@@ -378,7 +391,10 @@ class Uri implements UriInterface
      */
     public function withQuery($query)
     {
-        
+        $uriParts = (array) $this;
+        $uriParts['query'] = $query;
+
+        return new self($uriParts);
     }
 
     /**
@@ -397,7 +413,10 @@ class Uri implements UriInterface
      */
     public function withFragment($fragment)
     {
-        
+        $uriParts = (array) $this;
+        $uriParts['fragment'] = $fragment;
+
+        return new self($uriParts);
     }
 
     /**
