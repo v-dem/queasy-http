@@ -3,6 +3,7 @@
 namespace queasy\http;
 
 use Psr\Http\Message\MessageInterface;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * HTTP messages consist of requests from a client to a server and responses

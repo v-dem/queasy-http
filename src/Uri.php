@@ -4,6 +4,9 @@ namespace queasy\http;
 
 use Psr\Http\Message\UriInterface;
 
+use Exception;
+use InvalidArgumentException;
+
 /**
  * Value object representing a URI.
  *
@@ -26,6 +29,42 @@ use Psr\Http\Message\UriInterface;
  */
 class Uri implements UriInterface
 {
+    private $scheme;
+
+    private $host;
+
+    private $port;
+
+    private $user;
+
+    private $pass;
+
+    private $path;
+
+    private $query;
+
+    private $fragment;
+
+    public function __construct($uriOrParsedUri)
+    {
+        if (is_string($uriOrParsedUri)) {
+            $parsedUri = parse_url($uriOrParsedUri);
+            if (false === $parsedUri) {
+                throw new Exception(sprintf('Invalid URI: "%s"', $uriOrParsedUri));
+            }
+        } elseif (is_array($uriOrParsedUri)) {
+            $parsedUri = $uriOrParsedUri;
+        } else {
+            throw new InvalidArgumentException(sprintf('Not an URI passed. Type: "%s".', gettype($uriOrParsedUri)));
+        }
+
+        foreach ($parsedUri as $uriPartName => $uriPartValue) {
+            if (property_exists($this, $uriPartName)) {
+                $this->$uriPartName = $uriPartValue;
+            }
+        }
+    }
+
     /**
      * Retrieve the scheme component of the URI.
      *
@@ -42,7 +81,7 @@ class Uri implements UriInterface
      */
     public function getScheme()
     {
-        
+        return $this->scheme;
     }
 
     /**
@@ -65,7 +104,15 @@ class Uri implements UriInterface
      */
     public function getAuthority()
     {
-        
+        if (empty($this->user)) {
+            return '';
+        }
+
+        return
+            $this->user
+            . (empty($this->pass)? '': ':' . $this->pass)
+            . '@' . $this->host
+            . (empty($this->port)? '': ':' . $this->port);
     }
 
     /**
@@ -85,7 +132,13 @@ class Uri implements UriInterface
      */
     public function getUserInfo()
     {
-        
+        if (empty($this->user)) {
+            return '';
+        }
+
+        return
+            $this->user
+            . (empty($this->pass)? '': ':' . $this->pass);
     }
 
     /**
@@ -101,7 +154,7 @@ class Uri implements UriInterface
      */
     public function getHost()
     {
-        
+        return $this->host;
     }
 
     /**
@@ -121,7 +174,7 @@ class Uri implements UriInterface
      */
     public function getPort()
     {
-        
+        return $this->port;
     }
 
     /**
@@ -151,7 +204,7 @@ class Uri implements UriInterface
      */
     public function getPath()
     {
-        
+        return $this->path;
     }
 
     /**
@@ -176,7 +229,7 @@ class Uri implements UriInterface
      */
     public function getQuery()
     {
-        
+        return $this->query;
     }
 
     /**
@@ -197,7 +250,7 @@ class Uri implements UriInterface
      */
     public function getFragment()
     {
-        
+        return $this->fragment;
     }
 
     /**
@@ -217,7 +270,10 @@ class Uri implements UriInterface
      */
     public function withScheme($scheme)
     {
-        
+        $uriParts = (array) $this;
+        $uriParts['scheme'] = $scheme;
+
+        return new self($uriParts);
     }
 
     /**

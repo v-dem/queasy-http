@@ -19,5 +19,13 @@
         "psr-4": {
             "queasy\\http\\": "src/"
         }
+    },
+    "autoload-dev":{
+        "psr-4":{
+            "queasy\\db\\tests\\": "tests/src/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit --coverage-clover coverage.xml"
     }
 }
