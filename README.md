@@ -1,0 +1,5 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/40f243e211a9411cb01376f55b423ba4)](https://app.codacy.com/manual/v-dem/queasy-http?utm_source=github.com&utm_medium=referral&utm_content=v-dem/queasy-http&utm_campaign=Badge_Grade_Dashboard)
+[![Build Status](https://travis-ci.com/v-dem/queasy-http.svg?branch=master)](https://travis-ci.com/v-dem/queasy-http)
+[![codecov](https://codecov.io/gh/v-dem/queasy-http/branch/master/graph/badge.svg)](https://codecov.io/gh/v-dem/queasy-http)
+[![Total Downloads](https://poser.pugx.org/v-dem/queasy-http/downloads)](https://packagist.org/packages/v-dem/queasy-http)
+[![License](https://poser.pugx.org/v-dem/queasy-http/license)](https://packagist.org/packages/v-dem/queasy-http)
