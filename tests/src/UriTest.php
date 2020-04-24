@@ -261,5 +261,21 @@ class UriTest extends TestCase
         $this->assertEquals('here', $uri->getFragment());
         $this->assertEquals('somewhere', $newUri->getFragment());
     }
+
+    public function testToStringFull()
+    {
+        $uri = new Uri([
+            'scheme' => 'https',
+            'user' => 'john.doe',
+            'pass' => 'secret123',
+            'port' => '8080',
+            'host' => 'example.com',
+            'path' => '/some/path',
+            'query' => 'a=12&b=231',
+            'fragment' => 'there'
+        ]);
+
+        $this->assertEquals('https://john.doe:secret123@example.com:8080/some/path?a=12&b=231#there', (string) $uri);
+    }
 }
 
