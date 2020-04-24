@@ -106,15 +106,17 @@ class Uri implements UriInterface
      */
     public function getAuthority()
     {
-        if (empty($this->user)) {
+        if (empty($this->host)) {
             return '';
         }
 
-        return
-            $this->user
-            . (empty($this->pass)? '': ':' . $this->pass)
-            . '@' . $this->host
-            . (empty($this->port)? '': ':' . $this->port);
+        $authority = $this->host . (empty($this->port)? '': ':' . $this->port);
+
+        if (!empty($this->user)) {
+            $authority = $this->user . (empty($this->pass)? '': ':' . $this->pass) . '@' . $authority;
+        }
+
+        return $authority;
     }
 
     /**

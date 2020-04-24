@@ -59,12 +59,12 @@ class UriTest extends TestCase
         $this->assertEquals('here', $uri->getFragment());
     }
 
-    public function testWithoutAuthority()
+    public function testWithoutUser()
     {
         $uri = new Uri('http://example.com:8080/path/to/index.php?a=123&b=sdasad#here');
 
         $this->assertEquals('http', $uri->getScheme());
-        $this->assertEquals('', $uri->getAuthority());
+        $this->assertEquals('example.com:8080', $uri->getAuthority());
         $this->assertEquals('', $uri->getUserInfo());
         $this->assertEquals('example.com', $uri->getHost());
         $this->assertEquals('8080', $uri->getPort());
