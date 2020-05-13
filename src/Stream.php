@@ -5,6 +5,7 @@ namespace queasy\http;
 use Psr\Http\Message\StreamInterface;
 
 use Exception;
+use InvalidArgumentException;
 use RuntimeException;
 
 /**
@@ -40,8 +41,6 @@ class Stream implements StreamInterface
 
     private $isReadable;
 
-    private $meta;
-
     public function __construct($resource = null, $bufferSize = null)
     {
         if (null !== $bufferSize) {
@@ -50,8 +49,10 @@ class Stream implements StreamInterface
 
         if (is_resource($resource)) {
             $this->resource = $resource;
-        } else {
+        } elseif ((null === $resource) || is_scalar($resource)) {
             $this->resource = fopen('php://temp', 'w+');
+        } else {
+            throw new InvalidArgumentException('Argument must be resou.');
         }
 
         $this->meta = stream_get_meta_data($this->resource);
@@ -63,7 +64,11 @@ class Stream implements StreamInterface
         $this->isWritable = in_array($mode, static::$WRITABLE_MODES);
         $this->isReadable = in_array($mode, static::$READABLE_MODES);
 
-        if (is_string($resource)) {
+        if (is_scalar($resource)) {
+            if (!is_string($resource)) {
+                $resource = (string) $resource;
+            }
+
             $this->write($resource);
             $this->rewind();
         }
