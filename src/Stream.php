@@ -18,17 +18,17 @@ class Stream implements StreamInterface
 {
     const BUFFER_SIZE = 65536;
 
-    private static READABLE_MODES = array(
+    private static $READABLE_MODES = array(
         'r', 'r+', 'w+', 'a+', 'x+', 'c+'
     );
 
-    private static WRITABLE_MODES = array(
+    private static $WRITABLE_MODES = array(
         'r+', 'w', 'w+', 'a', 'a+', 'x', 'x+', 'c', 'c+'
     );
 
     private $resource;
 
-    private $bufferSize = static::BUFFER_SIZE;
+    private $bufferSize = self::BUFFER_SIZE;
 
     private $isSeekable;
 
@@ -57,8 +57,8 @@ class Stream implements StreamInterface
         $this->meta = stream_get_meta_data($this->resource);
 
         $this->isSeekable = $this->meta['seekable'];
-        $this->isWritable = in_array($this->meta['mode'], static::WRITABLE_MODES);
-        $this->isReadable = in_array($this->meta['mode'], static::READABLE_MODES);
+        $this->isWritable = in_array($this->meta['mode'], static::$WRITABLE_MODES);
+        $this->isReadable = in_array($this->meta['mode'], static::$READABLE_MODES);
     }
 
     /**
