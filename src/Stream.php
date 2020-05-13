@@ -26,6 +26,10 @@ class Stream implements StreamInterface
         'r+', 'w', 'w+', 'a', 'a+', 'x', 'x+', 'c', 'c+'
     );
 
+    private static $REMOVE_MODE_FLAGS = array(
+        'e', 't', 'b'
+    );
+
     private $resource;
 
     private $bufferSize = self::BUFFER_SIZE;
@@ -48,17 +52,21 @@ class Stream implements StreamInterface
             $this->resource = $resource;
         } else {
             $this->resource = fopen('php://temp', 'w+');
-            if (is_string($resource)) {
-                $this->write($resource);
-                $this->rewind();
-            }
         }
 
         $this->meta = stream_get_meta_data($this->resource);
 
-        $this->isSeekable = $this->meta['seekable'];
-        $this->isWritable = in_array($this->meta['mode'], static::$WRITABLE_MODES);
-        $this->isReadable = in_array($this->meta['mode'], static::$READABLE_MODES);
+        $this->isSeekable = (bool) $this->meta['seekable'];
+
+        $mode = str_replace(static::$REMOVE_MODE_FLAGS, '', $this->meta['mode']);
+
+        $this->isWritable = in_array($mode, static::$WRITABLE_MODES);
+        $this->isReadable = in_array($mode, static::$READABLE_MODES);
+
+        if (is_string($resource)) {
+            $this->write($resource);
+            $this->rewind();
+        }
     }
 
     /**
@@ -229,6 +237,8 @@ class Stream implements StreamInterface
         if (false === $result) {
             throw new RuntimeException('Error occured while writing to resource.');
         }
+
+        return $result;
     }
 
     /**
