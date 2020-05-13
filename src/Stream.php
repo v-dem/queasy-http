@@ -41,6 +41,8 @@ class Stream implements StreamInterface
 
     private $isReadable;
 
+    private $meta;
+
     public function __construct($resource = null, $bufferSize = null)
     {
         if (null !== $bufferSize) {
