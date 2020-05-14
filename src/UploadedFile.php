@@ -16,8 +16,14 @@ class UploadedFile implements UploadedFileInterface
 {
     private $stream;
 
-    public function __construct()
+    private $isMoved = false;
+
+    private $fileData;
+
+    public function __construct($name)
     {
+        $fileData = $_FILES[$name];
+
         
     }
 
@@ -39,7 +45,11 @@ class UploadedFile implements UploadedFileInterface
      */
     public function getStream()
     {
-        
+        if ($this->isMoved) {
+            throw new RuntimeException('Resource was already moved.');
+        }
+
+        return $this->stream;
     }
 
     /**
@@ -76,7 +86,14 @@ class UploadedFile implements UploadedFileInterface
      */
     public function moveTo($targetPath)
     {
+        $dir = pathinfo($targetPath);
+        if (!is_dir($dir)) {
+            throw new InvalidArgumentException('Specified path is invalid.');
+        }
+
         
+
+        $this->isMoved = true;
     }
 
     /**
