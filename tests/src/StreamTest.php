@@ -164,7 +164,7 @@ class StreamTest extends TestCase
 
     public function testStreamNotSeekable()
     {
-        $stream = new Stream(STDOUT);
+        $stream = new Stream(fopen('php://output', 'a'));
 
         $this->assertFalse($stream->isSeekable());
 
