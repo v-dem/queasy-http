@@ -54,7 +54,7 @@ class Stream implements StreamInterface
         } elseif ((null === $resource) || is_scalar($resource)) {
             $this->resource = fopen('php://temp', 'w+');
         } else {
-            throw new InvalidArgumentException('Argument must be resou.');
+            throw new InvalidArgumentException('Argument must be resource or scalar.');
         }
 
         $this->meta = stream_get_meta_data($this->resource);
@@ -270,6 +270,10 @@ class Stream implements StreamInterface
      */
     public function read($length)
     {
+        if (!$this->isReadable) {
+            throw new RuntimeException('Resource is not readable.');
+        }
+
         $result = fread($this->resource, $length);
         if (false === $result) {
             throw new RuntimeException('Error occured while reading from resource.');
@@ -309,10 +313,13 @@ class Stream implements StreamInterface
      */
     public function getMetadata($key = null)
     {
-        return is_null($key)
-            ? $this->meta
-            : (array_key_exists($key, $this->meta)
-                ? $this->meta[$key]
-                : null);
+        if (null === $key) {
+            return $this->meta;
+        } elseif (array_key_exists($key, $this->meta)) {
+            return $this->meta[$key];
+        } else {
+            return null;
+        }
     }
 }
+

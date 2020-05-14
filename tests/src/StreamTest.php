@@ -66,7 +66,7 @@ class StreamTest extends TestCase
 
         $this->assertEquals(5, $stream->getSize());
         $this->assertEquals('', $stream->getContents());
-        $this->assertEquals('ABCDE', (string) $stream);
+        $this->assertEquals('ABCDE', $stream->__toString());
     }
 
     public function testStringConstructorArgumentWrite()
@@ -123,6 +123,65 @@ class StreamTest extends TestCase
         $this->assertEquals(0, $meta['unread_bytes']);
         $this->assertEquals(1, $meta['seekable']);
         $this->assertEquals('php://temp', $meta['uri']);
+    }
+
+    public function testGetMetadataKey()
+    {
+        $stream = new Stream('Hello, World!!!');
+        $mode = $stream->getMetadata('mode');
+
+        $this->assertEquals('w+b', $mode);
+    }
+
+    public function testGetMetadataKeyNotExists()
+    {
+        $stream = new Stream('Hello, World!!!');
+
+        $this->assertNull($stream->getMetadata('not_exists'));
+    }
+
+    public function testStreamNotWritable()
+    {
+        $stream = new Stream(STDIN);
+
+        $this->assertFalse($stream->isWritable());
+
+        $this->expectException(RuntimeException::class);
+
+        $stream->write('232');
+    }
+
+    public function testStreamNotReadable()
+    {
+        $stream = new Stream(STDOUT);
+
+        $this->assertFalse($stream->isReadable());
+
+        $this->expectException(RuntimeException::class);
+
+        $result = $stream->read(5);
+    }
+
+    public function testStreamNotSeekable()
+    {
+        $stream = new Stream(STDIN);
+
+        $this->assertFalse($stream->isSeekable());
+
+        $this->expectException(RuntimeException::class);
+
+        $stream->seek(5);
+    }
+
+    public function testEof()
+    {
+        $stream = new Stream('Hello, World!!!');
+
+        $this->assertFalse($stream->eof());
+
+        $stream->read(16);
+
+        $this->assertTrue($stream->eof());
     }
 }
 
