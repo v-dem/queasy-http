@@ -317,9 +317,9 @@ class Stream implements StreamInterface
             return $this->meta;
         } elseif (array_key_exists($key, $this->meta)) {
             return $this->meta[$key];
-        } else {
-            return null;
         }
+
+        return null;
     }
 }
 
