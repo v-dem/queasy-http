@@ -274,10 +274,10 @@ class Uri implements UriInterface
      */
     public function withScheme($scheme)
     {
-        $uriParts = (array) $this;
-        $uriParts['scheme'] = $scheme;
+        $uri = clone $this;
+        $uri->scheme = $scheme;
 
-        return new self($uriParts);
+        return $uri;
     }
 
     /**
@@ -296,11 +296,11 @@ class Uri implements UriInterface
      */
     public function withUserInfo($user, $password = null)
     {
-        $uriParts = (array) $this;
-        $uriParts['user'] = $user;
-        $uriParts['pass'] = $password;
+        $uri = clone $this;
+        $uri->user = $user;
+        $uri->pass = $password;
 
-        return new self($uriParts);
+        return $uri;
     }
 
     /**
@@ -317,10 +317,10 @@ class Uri implements UriInterface
      */
     public function withHost($host)
     {
-        $uriParts = (array) $this;
-        $uriParts['host'] = $host;
+        $uri = clone $this;
+        $uri->host = $host;
 
-        return new self($uriParts);
+        return $uri;
     }
 
     /**
@@ -342,10 +342,10 @@ class Uri implements UriInterface
      */
     public function withPort($port)
     {
-        $uriParts = (array) $this;
-        $uriParts['port'] = $port;
+        $uri = clone $this;
+        $uri->port = $port;
 
-        return new self($uriParts);
+        return $uri;
     }
 
     /**
@@ -372,10 +372,10 @@ class Uri implements UriInterface
      */
     public function withPath($path)
     {
-        $uriParts = (array) $this;
-        $uriParts['path'] = $path;
+        $uri = clone $this;
+        $uri->path = $path;
 
-        return new self($uriParts);
+        return $uri;
     }
 
     /**
@@ -395,10 +395,10 @@ class Uri implements UriInterface
      */
     public function withQuery($query)
     {
-        $uriParts = (array) $this;
-        $uriParts['query'] = $query;
+        $uri = clone $this;
+        $uri->query = $query;
 
-        return new self($uriParts);
+        return $uri;
     }
 
     /**
@@ -417,10 +417,10 @@ class Uri implements UriInterface
      */
     public function withFragment($fragment)
     {
-        $uriParts = (array) $this;
-        $uriParts['fragment'] = $fragment;
+        $uri = clone $this;
+        $uri->fragment = $fragment;
 
-        return new self($uriParts);
+        return $uri;
     }
 
     /**
