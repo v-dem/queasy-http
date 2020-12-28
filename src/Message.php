@@ -19,6 +19,23 @@ use Psr\Http\Message\StreamInterface;
  */
 class Message implements MessageInterface
 {
+    private $protocolVersion;
+
+    private $headers;
+
+    private $headersLowerCase;
+
+    private $body;
+
+    public function __construct($protocolVersion, array $headers = array(), $body = '')
+    {
+        $this->protocolVersion = $protocolVersion;
+        $this->headers = $headers;
+        $this->body = $body;
+
+        $this->headersLowerCase = array_combine(array_map('strtolower', array_keys($arr)), $arr);
+    }
+
     /**
      * Retrieves the HTTP protocol version as a string.
      *
@@ -28,7 +45,7 @@ class Message implements MessageInterface
      */
     public function getProtocolVersion()
     {
-        
+        return $this->protocolVersion;
     }
 
     /**
@@ -46,7 +63,10 @@ class Message implements MessageInterface
      */
     public function withProtocolVersion($version)
     {
-        
+        $clone = clone $this;
+        $clone->protocolVersion = $version;
+
+        return $clone;
     }
 
     /**
@@ -76,7 +96,7 @@ class Message implements MessageInterface
      */
     public function getHeaders()
     {
-        
+        return $this->headers;
     }
 
     /**
@@ -89,7 +109,7 @@ class Message implements MessageInterface
      */
     public function hasHeader($name)
     {
-        
+        return isset($this->headersLowerCase[strtolower($name)]);
     }
 
     /**
@@ -108,7 +128,9 @@ class Message implements MessageInterface
      */
     public function getHeader($name)
     {
-        
+        return $this->hasHeader($name)
+            ? $this->headersLowerCase[strtolower($name)]
+            : array();
     }
 
     /**
@@ -132,7 +154,7 @@ class Message implements MessageInterface
      */
     public function getHeaderLine($name)
     {
-        
+        return implode(',', $this->getHeader($name));
     }
 
     /**
@@ -152,7 +174,11 @@ class Message implements MessageInterface
      */
     public function withHeader($name, $value)
     {
-        
+        $clone = clone $this;
+        $clone->headers[$name] = $value;
+        $clone->headersLowerCase[strtolower($name)] = $value;
+
+        return $clone;
     }
 
     /**
@@ -173,7 +199,9 @@ class Message implements MessageInterface
      */
     public function withAddedHeader($name, $value)
     {
-        
+        $clone = clone $this;
+
+        // $clone->headers
     }
 
     /**
