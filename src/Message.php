@@ -27,13 +27,13 @@ class Message implements MessageInterface
 
     private $body;
 
-    public function __construct($protocolVersion, array $headers = array(), $body = '')
+    public function __construct($protocolVersion, array $headers, StreamInterface $body)
     {
         $this->protocolVersion = $protocolVersion;
         $this->headers = $headers;
         $this->body = $body;
 
-        $this->headersLowerCase = array_combine(array_map('strtolower', array_keys($arr)), $arr);
+        $this->headersLowerCase = array_combine(array_map('strtolower', array_keys($headers)), $headers);
     }
 
     /**
@@ -200,8 +200,10 @@ class Message implements MessageInterface
     public function withAddedHeader($name, $value)
     {
         $clone = clone $this;
+        $clone->headers[$name][] = $value;
+        $clone->headersLowerCase[strtolower($name)][] = $value;
 
-        // $clone->headers
+        return $clone;
     }
 
     /**
@@ -218,7 +220,16 @@ class Message implements MessageInterface
      */
     public function withoutHeader($name)
     {
-        
+        $clone = clone $this;
+        $lowerName = strtolower($name);
+        unset($clone->headersLowerCase[$lowerName]);
+        foreach ($clone->headers as $header => $values) {
+            if (strtolower($header) === $lowerName) {
+                unset($clone->headers[$header]);
+            }
+        }
+
+        return $clone;
     }
 
     /**
@@ -228,7 +239,7 @@ class Message implements MessageInterface
      */
     public function getBody()
     {
-        
+        return $this->body;
     }
 
     /**
@@ -246,7 +257,10 @@ class Message implements MessageInterface
      */
     public function withBody(StreamInterface $body)
     {
-        
+        $clone = clone $this;
+        $clone->body = $body;
+
+        return $clone;
     }
 }
 
