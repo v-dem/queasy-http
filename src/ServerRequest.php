@@ -55,7 +55,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      */
     public function getServerParams()
     {
-        
+        return $_SERVER;
     }
 
     /**
@@ -70,7 +70,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      */
     public function getCookieParams()
     {
-        
+        return $_COOKIE;
     }
 
     /**

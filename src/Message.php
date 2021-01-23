@@ -33,7 +33,8 @@ class Message implements MessageInterface
         $this->headers = $headers;
         $this->body = $body;
 
-        $this->headersLowerCase = array_combine(array_map('strtolower', array_keys($headers)), $headers);
+        $headerKeys = array_keys($headers);
+        $this->headersLowerCase = array_combine(array_map('strtolower', $headerKeys), $headerKeys);
     }
 
     /**
@@ -129,7 +130,7 @@ class Message implements MessageInterface
     public function getHeader($name)
     {
         return $this->hasHeader($name)
-            ? $this->headersLowerCase[strtolower($name)]
+            ? $this->headers[$this->headersLowerCase[strtolower($name)]]
             : array();
     }
 
@@ -176,7 +177,7 @@ class Message implements MessageInterface
     {
         $clone = clone $this;
         $clone->headers[$name] = $value;
-        $clone->headersLowerCase[strtolower($name)] = $value;
+        $clone->headersLowerCase[strtolower($name)] = $name;
 
         return $clone;
     }
@@ -199,9 +200,19 @@ class Message implements MessageInterface
      */
     public function withAddedHeader($name, $value)
     {
+        if (!is_array($value)) {
+            $value = array($value);
+        }
+
+        $lowerName = strtolower($name);
+
         $clone = clone $this;
-        $clone->headers[$name][] = $value;
-        $clone->headersLowerCase[strtolower($name)][] = $value;
+        if (isset($clone->headersLowerCase[$lowerName])) {
+            $clone->headers[$clone->headersLowerCase[$lowerName]] = array_merge($clone->headers[$clone->headersLowerCase[$lowerName]], $value);
+        } else {
+            $clone->headers[$name] = $value;
+            $clone->headersLowerCase[$lowerName] = $name;
+        }
 
         return $clone;
     }
@@ -263,4 +274,3 @@ class Message implements MessageInterface
         return $clone;
     }
 }
-
