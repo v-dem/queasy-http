@@ -44,6 +44,15 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class ServerRequest extends Request implements ServerRequestInterface
 {
+    private $server;
+    
+    public function __construct(array $server = null)
+    {
+        if (null === $server) {
+            $this->server = filter_input_array(INPUT_SERVER);
+        }
+    }
+    
     /**
      * Retrieve server parameters.
      *
@@ -55,7 +64,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      */
     public function getServerParams()
     {
-        return $_SERVER;
+        return $this->server;
     }
 
     /**
