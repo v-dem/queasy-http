@@ -167,5 +167,21 @@ class MessageTest extends TestCase
         $this->assertFalse($clonedMessage->hasHeader('header1'));
     }
 
+    public function testGetBody()
+    {
+        $message = new Message('1.1', ['header1' => [12, 33, 'abcd']], $body = new Stream());
+
+        $this->assertSame($body, $message->getBody());
+    }
+
+    public function testWithBody()
+    {
+        $message = new Message('1.1', ['header1' => [12, 33, 'abcd']], $body = new Stream());
+        $clonedMessage = $message->withBody($newBody = new Stream());
+
+        $this->assertNotSame($message, $clonedMessage);
+        $this->assertNotSame($body, $clonedMessage->getBody());
+        $this->assertSame($newBody, $clonedMessage->getBody());
+    }
 }
 
