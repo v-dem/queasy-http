@@ -274,3 +274,4 @@ class Message implements MessageInterface
         return $clone;
     }
 }
+

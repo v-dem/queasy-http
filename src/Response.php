@@ -21,6 +21,11 @@ use Psr\Http\Message\ResponseInterface;
  */
 class Response extends Message implements ResponseInterface
 {
+    const RESPONSE_FORMAT = 'HTTP/%s %d%s%s%s';
+
+    private $statusCode = 200;
+    private $reasonPhrase = '';
+
     /**
      * Gets the response status code.
      *
@@ -31,7 +36,7 @@ class Response extends Message implements ResponseInterface
      */
     public function getStatusCode()
     {
-        
+        return $this->statusCode;
     }
 
     /**
@@ -56,7 +61,11 @@ class Response extends Message implements ResponseInterface
      */
     public function withStatus($code, $reasonPhrase = '')
     {
-        
+        $clone = clone $this;
+        $clone->statusCode = $code;
+        $clone->reasonPhrase = $reasonPhrase;
+
+        return $clone;
     }
 
     /**
@@ -74,6 +83,36 @@ class Response extends Message implements ResponseInterface
      */
     public function getReasonPhrase()
     {
-        
+        return $this->reasonPhrase;
+    }
+
+    public function __toString()
+    {
+        $headerLines = array();
+        foreach ($this->getHeaders() as $header => $values) {
+            foreach ($values as $value) {
+                $headerLines[] = sprintf('%s: %s', $header, $value);
+            }
+        }
+
+        $headers = implode("\r\n", $headerLines);
+
+        $body = (string) $this->getBody();
+
+        return sprintf(
+            static::RESPONSE_FORMAT,
+            $this->getProtocolVersion(),
+            $this->getStatusCode(),
+            $this->getReasonPhrase()
+                ? ' ' . $this->getReasonPhrase()
+                : '',
+            empty($headers)
+                ? ''
+                : "\r\n" . $headers,
+            empty($body)
+                ? ''
+                : "\r\n\r\n" . $this->getBody()
+        );
     }
 }
+
