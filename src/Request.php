@@ -26,6 +26,25 @@ use Psr\Http\Message\UriInterface;
  */
 class Request extends Message implements RequestInterface
 {
+    private $requestTarget;
+
+    private $method;
+
+    private $uri;
+
+    public function __construct($protocolVersion, array $headers, StreamInterface $body, $requestTarget, $method, UriInterface $uri)
+    {
+        parent::__construct($protocolVersion, $headers, $body);
+
+        $this->requestTarget = empty($requestTarget)
+            ? '/'
+            : $requestTarget;
+
+        $this->method = $method;
+
+        $this->uri = $uri;
+    }
+
     /**
      * Retrieves the message's request target.
      *
@@ -44,7 +63,7 @@ class Request extends Message implements RequestInterface
      */
     public function getRequestTarget()
     {
-        
+        return $this->requestTarget;
     }
 
     /**
@@ -66,7 +85,10 @@ class Request extends Message implements RequestInterface
      */
     public function withRequestTarget($requestTarget)
     {
-        
+        $clone = clone $this;
+        $clone->requestTarget = $requestTarget;
+
+        return $clone;
     }
 
     /**
@@ -76,7 +98,7 @@ class Request extends Message implements RequestInterface
      */
     public function getMethod()
     {
-        
+        return $this->method;
     }
 
     /**
@@ -96,7 +118,10 @@ class Request extends Message implements RequestInterface
      */
     public function withMethod($method)
     {
-        
+        $clone = clone $this;
+        $clone->method = $method;
+
+        return $clone;
     }
 
     /**
@@ -110,7 +135,7 @@ class Request extends Message implements RequestInterface
      */
     public function getUri()
     {
-        
+        return $this->uri;
     }
 
     /**
@@ -145,6 +170,17 @@ class Request extends Message implements RequestInterface
      */
     public function withUri(UriInterface $uri, $preserveHost = false)
     {
-        
+        $clone = clone $this;
+        $clone->uri = $uri;
+
+        /*
+        // TODO: ...
+        if ('' !== $uri->getHost()) {
+            $clone = $clone->uri->withHost($uri->getHost());
+        }
+        */
+
+        return $clone;
     }
 }
+

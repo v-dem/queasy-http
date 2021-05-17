@@ -45,14 +45,31 @@ use Psr\Http\Message\ServerRequestInterface;
 class ServerRequest extends Request implements ServerRequestInterface
 {
     private $server;
-    
+
     public function __construct(array $server = null)
     {
-        if (null === $server) {
-            $this->server = filter_input_array(INPUT_SERVER);
-        }
+        $this-> $server = (null === $server)
+            ? filter_input_array(INPUT_SERVER)
+            : $server;
+
+        parent::__construct(
+            preg_replace('/^[^\/]*\//', '', $server['SERVER_PROTOCOL']),
+            getallheaders(),
+            new Stream(STDIN),
+            $this->server['REQUEST_URI'],
+            $this->server['REQUEST_METHOD'],
+            new Uri(array(
+                'scheme' => $this->server['REQUEST_SCHEME'],
+                'host' => isset($this->server['SERVER_NAME'])
+                    ? $this->server['SERVER_NAME']
+                    : $this->server['SERVER_ADDR'],
+                'port' => $this->server['SERVER_PORT'],
+                'path' => $this->server['REQUEST_URI'],
+                'query' => $this->server['QUERY_STRING']
+            ))
+        );
     }
-    
+
     /**
      * Retrieve server parameters.
      *
@@ -309,3 +326,4 @@ class ServerRequest extends Request implements ServerRequestInterface
         
     }
 }
+
