@@ -48,7 +48,7 @@ class ServerRequest extends Request implements ServerRequestInterface
 
     public function __construct(array $server = null)
     {
-        $this-> $server = (null === $server)
+        $this->$server = (null == $server)
             ? filter_input_array(INPUT_SERVER)
             : $server;
 
