@@ -4,6 +4,7 @@ namespace queasy\http;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\UriInterface;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Representation of an outgoing, client-side request.
