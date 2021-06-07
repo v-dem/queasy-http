@@ -48,12 +48,12 @@ class ServerRequest extends Request implements ServerRequestInterface
 
     public function __construct(array $server = null)
     {
-        $this->$server = (null == $server)
+        $this->server = (null == $server)
             ? filter_input_array(INPUT_SERVER)
             : $server;
 
         parent::__construct(
-            preg_replace('/^[^\/]*\//', '', $server['SERVER_PROTOCOL']),
+            preg_replace('/^[^\/]*\//', '', $this->server['SERVER_PROTOCOL']),
             getallheaders(),
             new Stream(STDIN),
             $this->server['REQUEST_URI'],
