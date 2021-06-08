@@ -86,6 +86,19 @@ class Response extends Message implements ResponseInterface
         return $this->reasonPhrase;
     }
 
+    public function send()
+    {
+        http_response_code($this->getStatusCode());
+
+        foreach ($this->getHeaders() as $header => $values) {
+            foreach ($values as $value) {
+                header(sprintf('%s: %s', $header, $value));
+            }
+        }
+
+        echo $this->getBody();
+    }
+
     public function __toString()
     {
         $headerLines = array();
