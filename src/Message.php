@@ -27,11 +27,11 @@ class Message implements MessageInterface
 
     private $body;
 
-    public function __construct($protocolVersion, array $headers, StreamInterface $body)
+    public function __construct($protocolVersion = '1.1', array $headers = array(), StreamInterface $body = null)
     {
         $this->protocolVersion = $protocolVersion;
         $this->headers = $headers;
-        $this->body = $body;
+        $this->body = (null == $body)? new Stream(): $body;
 
         $headerKeys = array_keys($headers);
         $this->headersLowerCase = array_combine(array_map('strtolower', $headerKeys), $headerKeys);
