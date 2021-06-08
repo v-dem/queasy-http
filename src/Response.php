@@ -96,7 +96,7 @@ class Response extends Message implements ResponseInterface
             }
         }
 
-        return $this->getBody();
+        return (string) $this->getBody();
 /*
         $headerLines = array();
         foreach ($this->getHeaders() as $header => $values) {
