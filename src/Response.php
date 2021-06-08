@@ -86,7 +86,7 @@ class Response extends Message implements ResponseInterface
         return $this->reasonPhrase;
     }
 
-    public function send()
+    public function __toString()
     {
         http_response_code($this->getStatusCode());
 
@@ -96,11 +96,8 @@ class Response extends Message implements ResponseInterface
             }
         }
 
-        echo $this->getBody();
-    }
-
-    public function __toString()
-    {
+        return $this->getBody();
+/*
         $headerLines = array();
         foreach ($this->getHeaders() as $header => $values) {
             foreach ($values as $value) {
@@ -126,6 +123,7 @@ class Response extends Message implements ResponseInterface
                 ? ''
                 : "\r\n\r\n" . $this->getBody()
         );
+*/
     }
 }
 
