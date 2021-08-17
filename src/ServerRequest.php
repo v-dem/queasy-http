@@ -325,5 +325,10 @@ class ServerRequest extends Request implements ServerRequestInterface
     {
         
     }
+
+    public function isAjax()
+    {
+        return 'XMLHttpRequest' == $this->headers->get('X-Requested-With');
+    }
 }
 

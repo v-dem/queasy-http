@@ -1,6 +1,6 @@
 {
     "name": "v-dem/queasy-http",
-    "description": "HTTP PSR-7 classes, part of Queasy PHP framework",
+    "description": "HTTP PSR-7 classes, part of QuEasy PHP framework",
     "homepage": "https://github.com/v-dem/queasy-http/",
     "keywords": ["php", "psr7", "http"],
     "license": "LGPL-3.0-only",
