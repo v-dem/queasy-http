@@ -21,4 +21,3 @@ HTTP PSR-7 ready classes.
     composer require v-dem/queasy-http:master-dev
 
 ### Usage
-
