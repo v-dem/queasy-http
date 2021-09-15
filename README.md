@@ -4,3 +4,21 @@
 [![Total Downloads](https://poser.pugx.org/v-dem/queasy-http/downloads)](https://packagist.org/packages/v-dem/queasy-http)
 [![License](https://poser.pugx.org/v-dem/queasy-http/license)](https://packagist.org/packages/v-dem/queasy-http)
 
+# [QuEasy PHP Framework](https://github.com/v-dem/queasy-framework/) - HTTP PSR-7 Classes
+
+## Package `v-dem/queasy-http`
+
+HTTP PSR-7 ready classes.
+
+### Features
+
+### Requirements
+
+*   PHP version 5.3 or higher
+
+### Installation
+
+    composer require v-dem/queasy-http:master-dev
+
+### Usage
+
