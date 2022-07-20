@@ -46,11 +46,21 @@ class ServerRequest extends Request implements ServerRequestInterface
 {
     private $server;
 
-    public function __construct($server = null)
+    private $get;
+
+    private $post;
+
+    private $files;
+
+    public function __construct()
     {
-        $this->server = (null == $server)
-            ? filter_input_array(INPUT_SERVER)
-            : $server;
+        $this->server = filter_input_array(INPUT_SERVER);
+
+        $this->get = filter_input_array(INPUT_GET);
+
+        $this->post = filter_input_array(INPUT_POST);
+
+        $this->files = $_FILES;
 
         parent::__construct(
             preg_replace('/^[^\/]*\//', '', $this->server['SERVER_PROTOCOL']),
@@ -135,7 +145,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      */
     public function getQueryParams()
     {
-        
+        return $this->get;
     }
 
     /**
@@ -179,7 +189,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      */
     public function getUploadedFiles()
     {
-        
+        return $this->files;
     }
 
     /**
@@ -215,7 +225,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      */
     public function getParsedBody()
     {
-        
+        return $this->post;
     }
 
     /**
