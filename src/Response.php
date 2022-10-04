@@ -90,10 +90,16 @@ class Response extends Message implements ResponseInterface
     {
         http_response_code($this->getStatusCode());
 
-        foreach ($this->getHeaders() as $header => $values) {
-            foreach ($values as $value) {
-                header(sprintf('%s: %s', $header, $value));
+        foreach ($this->getHeaders() as $header => $value) {
+            if (is_array($value)) {
+                foreach ($values as $value) {
+                    header(sprintf('%s: %s', $header, $value));
+                }
+
+                continue;
             }
+
+            header(sprintf('%s: %s', $header, $value));
         }
 
         return (string) $this->getBody();
