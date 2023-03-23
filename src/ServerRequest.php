@@ -62,9 +62,14 @@ class ServerRequest extends Request implements ServerRequestInterface
 
         $this->files = $_FILES;
 
+        $headers = getallheaders();
+        foreach ($headers as &$header) {
+            $header = explode(',', $header);
+        }
+
         parent::__construct(
             preg_replace('/^[^\/]*\//', '', $this->server['SERVER_PROTOCOL']),
-            getallheaders(),
+            $headers,
             new Stream(file_get_contents('php://input')),
             $this->server['REQUEST_URI'],
             $this->server['REQUEST_METHOD'],
