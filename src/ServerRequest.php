@@ -79,7 +79,7 @@ class ServerRequest extends Request implements ServerRequestInterface
                     ? $this->server['SERVER_NAME']
                     : $this->server['SERVER_ADDR'],
                 'port' => $this->server['SERVER_PORT'],
-                'path' => $this->server['REQUEST_URI'],
+                'path' => strtok($this->server['REQUEST_URI'], '?'),
                 'query' => $this->server['QUERY_STRING']
             ))
         );
