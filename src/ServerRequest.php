@@ -44,7 +44,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * be implemented such that they retain the internal state of the current
  * message and return an instance that contains the changed state.
  */
-class ServerRequest extends Request implements ServerRequestInterface, ArrayAccess
+class ServerRequest extends Request implements ServerRequestInterface /*, ArrayAccess*/
 {
     private $server;
 
