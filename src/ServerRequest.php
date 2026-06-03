@@ -54,38 +54,7 @@ class ServerRequest extends Request implements ServerRequestInterface /*, ArrayA
 
     private $files;
 
-    public function __construct()
-    {
-        $this->server = filter_input_array(INPUT_SERVER);
-
-        $this->get = filter_input_array(INPUT_GET);
-
-        $this->post = filter_input_array(INPUT_POST);
-
-        $this->files = $_FILES;
-
-        $headers = getallheaders();
-        foreach ($headers as &$header) {
-            $header = explode(',', $header);
-        }
-
-        parent::__construct(
-            preg_replace('/^[^\/]*\//', '', $this->server['SERVER_PROTOCOL']),
-            $headers,
-            new Stream(file_get_contents('php://input')),
-            $this->server['REQUEST_URI'],
-            $this->server['REQUEST_METHOD'],
-            new Uri(array(
-                'scheme' => $this->server['REQUEST_SCHEME'],
-                'host' => isset($this->server['SERVER_NAME'])
-                    ? $this->server['SERVER_NAME']
-                    : $this->server['SERVER_ADDR'],
-                'port' => $this->server['SERVER_PORT'],
-                'path' => strtok($this->server['REQUEST_URI'], '?'),
-                'query' => $this->server['QUERY_STRING']
-            ))
-        );
-    }
+    private $cookies;
 
     /**
      * Retrieve server parameters.
@@ -113,7 +82,7 @@ class ServerRequest extends Request implements ServerRequestInterface /*, ArrayA
      */
     public function getCookieParams()
     {
-        return $_COOKIE;
+        return $this->cookies;
     }
 
     /**
@@ -135,7 +104,10 @@ class ServerRequest extends Request implements ServerRequestInterface /*, ArrayA
      */
     public function withCookieParams(array $cookies)
     {
-        
+        $clone = clone $this;
+        $clone->cookies = $cookies;
+
+        return $clone;
     }
 
     /**
@@ -179,7 +151,10 @@ class ServerRequest extends Request implements ServerRequestInterface /*, ArrayA
      */
     public function withQueryParams(array $query)
     {
-        
+        $clone = clone $this;
+        $clone->get = $query;
+
+        return $clone;
     }
 
     /**
@@ -212,7 +187,10 @@ class ServerRequest extends Request implements ServerRequestInterface /*, ArrayA
      */
     public function withUploadedFiles(array $uploadedFiles)
     {
-        
+        $clone = clone $this;
+        $clone->files = $uploadedFiles;
+
+        return $clone;
     }
 
     /**
@@ -265,7 +243,10 @@ class ServerRequest extends Request implements ServerRequestInterface /*, ArrayA
      */
     public function withParsedBody($data)
     {
-        
+        $clone = clone $this;
+        $clone->post = $data;
+
+        return $clone;
     }
 
     /**
@@ -281,7 +262,7 @@ class ServerRequest extends Request implements ServerRequestInterface /*, ArrayA
      */
     public function getAttributes()
     {
-        
+        return $this->attributes;
     }
 
     /**
@@ -301,7 +282,11 @@ class ServerRequest extends Request implements ServerRequestInterface /*, ArrayA
      */
     public function getAttribute($name, $default = null)
     {
-        
+        if (isset($this->attributes[$name])) {
+            return $this->attributes[$name];
+        }
+
+        return $default;
     }
 
     /**
@@ -321,7 +306,10 @@ class ServerRequest extends Request implements ServerRequestInterface /*, ArrayA
      */
     public function withAttribute($name, $value)
     {
-        
+        $clone = clone $this;
+        $clone->attributes[$name] = $value;
+
+        return $clone;
     }
 
     /**
@@ -340,10 +328,13 @@ class ServerRequest extends Request implements ServerRequestInterface /*, ArrayA
      */
     public function withoutAttribute($name)
     {
-        
+        $clone = clone $this;
+        unset($clone->attributes[$name]);
+
+        return $clone;
     }
 
-    public function isAjax()
+    public function isAjax() // TODO: Move to an AjaxMiddleware class which will than call setAttribute('isAjax', true)
     {
         return isset($this->server['HTTP_X_REQUESTED_WITH'])
             && !empty($this->server['HTTP_X_REQUESTED_WITH'])

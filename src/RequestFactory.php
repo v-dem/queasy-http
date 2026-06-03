@@ -2,7 +2,10 @@
 
 namespace queasy\http;
 
-class RequestFactory
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+
+class RequestFactory implements RequestFactoryInterface
 {
     /**
      * Create a new request.
@@ -18,6 +21,9 @@ class RequestFactory
     {
         $request = new Request();
 
-        // return new 
+        return $request
+            ->withMethod($method)
+            ->withUri($uri);
     }
 }
+

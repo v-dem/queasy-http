@@ -4,6 +4,9 @@ namespace queasy\http;
 
 use Psr\Http\Message\UploadedFileInterface;
 
+use RuntimeException;
+use InvalidArgumentException;
+
 /**
  * Value object representing a file uploaded through an HTTP request.
  *
@@ -14,17 +17,33 @@ use Psr\Http\Message\UploadedFileInterface;
  */
 class UploadedFile implements UploadedFileInterface
 {
-    private $stream;
+    private $name;
+
+    private $type;
+
+    private $size;
+
+    private $path;
+
+    private $error;
+
+    private $clientPath;
+
+    private $clientType;
 
     private $isMoved = false;
 
-    private $fileData;
+    private $stream;
 
-    public function __construct($name)
+    public function __construct($name = null, $type = null, $size = null, $path = null, $error = null, $clientPath = null, $clientType = null)
     {
-        $fileData = $_FILES[$name];
-
-        
+        $this->name = $name;
+        $this->type = $type;
+        $this->size = $size;
+        $this->path = $path;
+        $this->error = $error;
+        $this->clientPath = $clientPath;
+        $this->clientType = $clientType;
     }
 
     /**
@@ -49,7 +68,15 @@ class UploadedFile implements UploadedFileInterface
             throw new RuntimeException('Resource was already moved.');
         }
 
-        return $this->stream;
+        return new Stream($this->path);
+    }
+
+    public function withStream(StreamInterface $stream)
+    {
+        $clone = clone $this;
+        $clone->stream = $stream;
+
+        return $clone;
     }
 
     /**
@@ -86,12 +113,22 @@ class UploadedFile implements UploadedFileInterface
      */
     public function moveTo($targetPath)
     {
+        if ($this->isMoved) {
+            throw new RuntimeException('Uploaded file was moved already.');
+        }
+
         $dir = pathinfo($targetPath);
-        if (!is_dir($dir)) {
+        if (!is_dir($dir)
+            || !is_writable($dir)
+            || file_exists($targetPath)
+                && !is_writable($targetPath))
+        {
             throw new InvalidArgumentException('Specified path is invalid.');
         }
 
-        
+        if (!move_uploaded_file($this->path, $targetPath)) {
+            throw new RuntimeException('Failed to move uploaded file.');
+        }
 
         $this->isMoved = true;
     }
@@ -107,7 +144,7 @@ class UploadedFile implements UploadedFileInterface
      */
     public function getSize()
     {
-        
+        return $this->size;
     }
 
     /**
@@ -126,7 +163,7 @@ class UploadedFile implements UploadedFileInterface
      */
     public function getError()
     {
-        
+        return $this->error;
     }
 
     /**
@@ -144,7 +181,7 @@ class UploadedFile implements UploadedFileInterface
      */
     public function getClientFilename()
     {
-        
+        return $this->clientPath;
     }
 
     /**
@@ -162,7 +199,7 @@ class UploadedFile implements UploadedFileInterface
      */
     public function getClientMediaType()
     {
-        
+        return $this->clientType;
     }
 }
 

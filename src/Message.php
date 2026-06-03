@@ -19,23 +19,13 @@ use Psr\Http\Message\StreamInterface;
  */
 class Message implements MessageInterface
 {
-    private $protocolVersion;
+    private $protocolVersion = '1.1';
 
-    private $headers;
+    private $headers = array();
 
-    private $headersLowerCase;
+    private $headersLowerCase = array();
 
     private $body;
-
-    public function __construct($protocolVersion = '1.1', array $headers = array(), StreamInterface $body = null)
-    {
-        $this->protocolVersion = $protocolVersion;
-        $this->headers = $headers;
-        $this->body = (null == $body)? new Stream(): $body;
-
-        $headerKeys = array_keys($headers);
-        $this->headersLowerCase = array_combine(array_map('strtolower', $headerKeys), $headerKeys);
-    }
 
     /**
      * Retrieves the HTTP protocol version as a string.

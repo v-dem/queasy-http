@@ -33,19 +33,6 @@ class Request extends Message implements RequestInterface
 
     private $uri;
 
-    public function __construct($protocolVersion, array $headers, StreamInterface $body, $requestTarget, $method, UriInterface $uri)
-    {
-        parent::__construct($protocolVersion, $headers, $body);
-
-        $this->requestTarget = empty($requestTarget)
-            ? '/'
-            : $requestTarget;
-
-        $this->method = $method;
-
-        $this->uri = $uri;
-    }
-
     /**
      * Retrieves the message's request target.
      *
