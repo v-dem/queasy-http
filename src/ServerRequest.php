@@ -333,14 +333,5 @@ class ServerRequest extends Request implements ServerRequestInterface /*, ArrayA
 
         return $clone;
     }
-
-    public function isAjax() // TODO: Move to an AjaxMiddleware class which will than call setAttribute('isAjax', true)
-    {
-        return isset($this->server['HTTP_X_REQUESTED_WITH'])
-            && !empty($this->server['HTTP_X_REQUESTED_WITH'])
-            && ('xmlhttprequest' === strtolower($this->server['HTTP_X_REQUESTED_WITH']))
-            || ('xmlhttprequest' === strtolower($this->getHeaderLine('X-Requested-With')))
-            || ('application/json' === strtolower($this->getHeaderLine('Accept')));
-    }
 }
 
