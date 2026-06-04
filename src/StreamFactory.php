@@ -3,10 +3,11 @@
 namespace queasy\http;
 
 use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 
 use RuntimeException;
 
-class StreamFactory implements StreamInterface
+class StreamFactory implements StreamFactoryInterface
 {
     /**
      * Create a new stream from a string.
