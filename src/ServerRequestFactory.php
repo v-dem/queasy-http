@@ -2,7 +2,6 @@
 
 namespace queasy\http;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 
 class ServerRequestFactory implements ServerRequestFactoryInterface
@@ -23,7 +22,8 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
      *
      * @return ServerRequestInterface
      */
-    public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
+    #[\ReturnTypeWillChange]
+    public function createServerRequest(string $method, $uri, array $serverParams = [])
     {
         $request = new ServerRequest();
 
@@ -48,7 +48,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
             ->withUploadedFiles($this->normalizeFiles($_FILES));
     }
 
-    private function detectUri(): UriInterface
+    private function detectUri()
     {
         $scheme = $this->detectScheme();
 
@@ -75,7 +75,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
         );
     }
 
-    private function detectScheme(): string
+    private function detectScheme()
     {
         if (
             isset($_SERVER['HTTPS']) &&
@@ -88,7 +88,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
         return 'http';
     }
 
-    private function normalizeFiles(array $files): array
+    private function normalizeFiles(array $files)
     {
         $normalized = array();
         foreach ($files as $key => $value) {
@@ -120,7 +120,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
         return $normalized;
     }
 
-    private function isUploadedFileSpec(array $file): bool
+    private function isUploadedFileSpec(array $file)
     {
         return isset(
             $file['tmp_name'],

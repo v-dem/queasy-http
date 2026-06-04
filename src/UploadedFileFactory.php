@@ -27,13 +27,14 @@ class UploadedFileFactory implements UploadedFileFactoryInterface
      *
      * @throws \InvalidArgumentException If the file resource is not readable.
      */
+    #[\ReturnTypeWillChange]
     public function createUploadedFile(
         StreamInterface $stream,
         ?int $size = null,
         int $error = \UPLOAD_ERR_OK,
         ?string $clientFilename = null,
         ?string $clientMediaType = null
-    ): UploadedFileInterface
+    )
     {
         $uploadedFile = new UploadedFile();
 
