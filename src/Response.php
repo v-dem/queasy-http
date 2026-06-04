@@ -90,6 +90,8 @@ class Response extends Message implements ResponseInterface
     {
         $emitter = new ResponseEmitter();
         $emitter->emit($this);
+
+        return '';
     }
 }
 
