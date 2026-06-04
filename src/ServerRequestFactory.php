@@ -27,9 +27,13 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
     {
         $request = new ServerRequest();
 
+        $uri = is_string($uri)
+            ? new Uri($uri)
+            : $uri;
+
         return $request
             ->withMethod($method)
-            ->withUri(new Uri($uri))
+            ->withUri($uri)
             ->withServerParams($serverParams);
     }
 
