@@ -88,48 +88,8 @@ class Response extends Message implements ResponseInterface
 
     public function __toString()
     {
-        http_response_code($this->getStatusCode());
-
-        foreach ($this->getHeaders() as $header => $values) {
-            if (is_array($values)) {
-                foreach ($values as $value) {
-                    header(sprintf('%s: %s', $header, $value));
-                }
-
-                continue;
-            }
-
-            header(sprintf('%s: %s', $header, $values));
-        }
-
-        return (string) $this->getBody();
-/*
-        $headerLines = array();
-        foreach ($this->getHeaders() as $header => $values) {
-            foreach ($values as $value) {
-                $headerLines[] = sprintf('%s: %s', $header, $value);
-            }
-        }
-
-        $headers = implode("\r\n", $headerLines);
-
-        $body = (string) $this->getBody();
-
-        return sprintf(
-            static::RESPONSE_FORMAT,
-            $this->getProtocolVersion(),
-            $this->getStatusCode(),
-            $this->getReasonPhrase()
-                ? ' ' . $this->getReasonPhrase()
-                : '',
-            empty($headers)
-                ? ''
-                : "\r\n" . $headers,
-            empty($body)
-                ? ''
-                : "\r\n\r\n" . $this->getBody()
-        );
-*/
+        $emitter = new ResponseEmitter();
+        $emitter->emit($this);
     }
 }
 
