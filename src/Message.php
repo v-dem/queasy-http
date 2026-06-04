@@ -166,7 +166,9 @@ class Message implements MessageInterface
     public function withHeader($name, $value)
     {
         $clone = clone $this;
-        $clone->headers[$name] = $value;
+        $clone->headers[$name] = is_array($value)
+            ? $value
+            : array($value);
         $clone->headersLowerCase[strtolower($name)] = $name;
 
         return $clone;
