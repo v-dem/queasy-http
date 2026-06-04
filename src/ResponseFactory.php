@@ -2,6 +2,7 @@
 
 namespace queasy\http;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 
 class ResponseFactory implements ResponseFactoryInterface
