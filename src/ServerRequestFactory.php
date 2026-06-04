@@ -2,6 +2,7 @@
 
 namespace queasy\http;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 
 class ServerRequestFactory implements ServerRequestFactoryInterface
@@ -20,16 +21,15 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
      * @param array $serverParams Array of SAPI parameters with which to seed
      *     the generated request instance.
      *
-     * @return ServerRequestInterface
+     * return ServerRequestInterface
      */
-    #[\ReturnTypeWillChange]
-    public function createServerRequest(string $method, $uri, array $serverParams = [])
+    public function createServerRequest(string $method, $uri, array $serverParams = array()): ServerRequestInterface
     {
         $request = new ServerRequest();
 
         return $request
             ->withMethod($method)
-            ->withUri($uri)
+            ->withUri(new Uri($uri))
             ->withServerParams($serverParams);
     }
 

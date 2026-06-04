@@ -70,6 +70,14 @@ class ServerRequest extends Request implements ServerRequestInterface /*, ArrayA
         return $this->server;
     }
 
+    public function withServerParams(array $params = array())
+    {
+        $clone = clone $this;
+        $clone->server = $params;
+
+        return $clone;
+    }
+
     /**
      * Retrieve cookies.
      *
