@@ -449,13 +449,13 @@ class Uri implements UriInterface
     public function __toString()
     {
         return
-            (empty($this->scheme)? '': $this->scheme . '://')
-            . (empty($this->user)? '': $this->user . (empty($this->pass)? '': ':' . $this->pass) . '@')
-            . (empty($this->host)? '': $this->host)
-            . (empty($this->port)? '': ':' . $this->port)
-            . (empty($this->path)? '/': (Strings::startsWith($this->path, '/')? '': '/') . $this->path)
-            . (empty($this->query)? '': '?' . $this->query)
-            . (empty($this->fragment)? '': '#' . $this->fragment);
+            (empty($this->scheme) ? '' : $this->scheme . '://')
+            . (empty($this->user) ? '' : $this->user . (empty($this->pass)? '': ':' . $this->pass) . '@')
+            . (empty($this->host) ? '' : $this->host)
+            . (empty($this->port) ? '' : ':' . $this->port)
+            . (empty($this->path) ? '/' : (Strings::startsWith($this->path, '/')? '': '/') . $this->path)
+            . (empty($this->query) ? '' : '?' . $this->query)
+            . (empty($this->fragment) ? '' : '#' . $this->fragment);
     }
 }
 

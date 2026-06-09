@@ -56,6 +56,8 @@ class ServerRequest extends Request implements ServerRequestInterface /*, ArrayA
 
     private $cookies;
 
+    private $attributes;
+
     /**
      * Retrieve server parameters.
      *
