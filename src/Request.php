@@ -63,7 +63,7 @@ class Request extends Message implements RequestInterface
 
         $query = $this->uri->getQuery();
 
-        if ($query !== '') {
+        if (!empty($query)) {
             $path .= '?' . $query;
         }
 
