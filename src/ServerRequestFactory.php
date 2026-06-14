@@ -116,9 +116,12 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
     {
         if ($this->isUploadedFileSpec($file)) {
             $streamFactory = new StreamFactory();
+            $stream = empty($file['tmp_name'])
+                ? $streamFactory->createStream()
+                : $streamFactory->createStreamFromFile($file['tmp_name']);
 
             return new UploadedFile(
-                $streamFactory->createStreamFromFile($file['tmp_name']),
+                $stream,
                 $file['size'],
                 $file['error'],
                 isset($file['name']) ? $file['name'] : null,
