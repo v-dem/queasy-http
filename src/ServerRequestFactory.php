@@ -45,10 +45,20 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
             $_SERVER
         );
 
+        $post = $_POST;
+        if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+            $contentType = $_SERVER['CONTENT_TYPE'] ?? $_SERVER['HTTP_CONTENT_TYPE'] ?? '';
+            if (stripos($contentType, 'multipart/form-data') !== false) {
+                $post = $this->parseMultipart();
+            } else {
+                parse_str(file_get_contents("php://input"), $post);
+            }
+        }
+
         return $request
             ->withCookieParams($_COOKIE)
             ->withQueryParams($_GET)
-            ->withParsedBody($_POST)
+            ->withParsedBody($post)
             ->withUploadedFiles($this->normalizeFiles($_FILES));
     }
 
@@ -135,6 +145,34 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
             $file['size'],
             $file['error']
         );
+    }
+
+    private function parseMultipart()
+    {
+        $rawData = file_get_contents('php://input');
+
+        preg_match('/boundary=(.*)$/', $_SERVER['CONTENT_TYPE'], $matches);
+        $boundary = $matches[1];
+
+        $blocks = preg_split("/-+$boundary/", $rawData);
+        array_pop($blocks);
+
+        $post = [];
+        foreach ($blocks as $block) {
+            if (empty($block)) {
+                continue;
+            }
+
+            list($head, $body) = explode("\r\n\r\n", $block, 2);
+
+            if (preg_match('/name="([^"]+)"/', $head, $nameMatches)) {
+                $name = $nameMatches[1];
+                $value = substr($body, 0, -2);
+                $post[$name] = $value;
+            }
+        }
+
+        return $post;
     }
 }
 
