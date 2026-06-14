@@ -46,6 +46,8 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
         );
 
         $post = $_POST;
+/*
+        // TODO: Implement custom Uploaded Files parsing because PHP doesn't support multipart PUT requests
         if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
             $contentType = $_SERVER['CONTENT_TYPE'] ?? $_SERVER['HTTP_CONTENT_TYPE'] ?? '';
             if (stripos($contentType, 'multipart/form-data') !== false) {
@@ -54,6 +56,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
                 parse_str(file_get_contents("php://input"), $post);
             }
         }
+*/
 
         return $request
             ->withCookieParams($_COOKIE)
