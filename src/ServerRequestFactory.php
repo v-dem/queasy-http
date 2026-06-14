@@ -114,11 +114,10 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
 
     private function normalizeFile(array $file)
     {
-        $uploadFactory = new UploadedFileFactory();
-        $streamFactory = new StreamFactory();
-
         if ($this->isUploadedFileSpec($file)) {
-            return $uploadFactory->createUploadedFile(
+            $streamFactory = new StreamFactory();
+
+            return new UploadedFile(
                 $streamFactory->createStreamFromFile($file['tmp_name']),
                 $file['size'],
                 $file['error'],
