@@ -105,7 +105,7 @@ class UploadedFile implements UploadedFileInterface
             throw new RuntimeException('Uploaded file was moved already.');
         }
 
-        $dir = pathinfo($targetPath);
+        $dir = pathinfo($targetPath, PATHINFO_DIRNAME);
         if (!is_dir($dir)
             || !is_writable($dir)
             || file_exists($targetPath)
