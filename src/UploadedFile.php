@@ -32,19 +32,14 @@ class UploadedFile implements UploadedFileInterface
 
     private $isMoved = false;
 
-                $file['tmp_name'],
-                $file['size'],
-                $file['error'],
-                isset($file['name']) ? $file['name'] : null,
-                isset($file['type']) ? $file['type'] : null
-
-    public function __construct(StreamInterface $stream, $size, $error, $clientPath = null, $clientType = null, $tmpName)
+    public function __construct(StreamInterface $stream, $size, $error, $clientPath = null, $clientType = null, $tmpName = null)
     {
         $this->stream = $stream;
         $this->size = $size;
         $this->error = $error;
         $this->clientPath = $clientPath;
         $this->clientType = $clientType;
+        $this->tmpName = $tmpName;
     }
 
     /**
