@@ -2,6 +2,7 @@
 
 namespace queasy\http;
 
+use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
 
 use RuntimeException;
@@ -17,13 +18,9 @@ use InvalidArgumentException;
  */
 class UploadedFile implements UploadedFileInterface
 {
-    private $name;
-
-    private $type;
+    private $stream;
 
     private $size;
-
-    private $path;
 
     private $error;
 
@@ -31,16 +28,20 @@ class UploadedFile implements UploadedFileInterface
 
     private $clientType;
 
+    private $tmpName;
+
     private $isMoved = false;
 
-    private $stream;
+                $file['tmp_name'],
+                $file['size'],
+                $file['error'],
+                isset($file['name']) ? $file['name'] : null,
+                isset($file['type']) ? $file['type'] : null
 
-    public function __construct($name = null, $type = null, $size = null, $path = null, $error = null, $clientPath = null, $clientType = null)
+    public function __construct(StreamInterface $stream, $size, $error, $clientPath = null, $clientType = null, $tmpName)
     {
-        $this->name = $name;
-        $this->type = $type;
+        $this->stream = $stream;
         $this->size = $size;
-        $this->path = $path;
         $this->error = $error;
         $this->clientPath = $clientPath;
         $this->clientType = $clientType;
@@ -68,15 +69,7 @@ class UploadedFile implements UploadedFileInterface
             throw new RuntimeException('Resource was already moved.');
         }
 
-        return new Stream($this->path);
-    }
-
-    public function withStream(StreamInterface $stream)
-    {
-        $clone = clone $this;
-        $clone->stream = $stream;
-
-        return $clone;
+        return $this->stream;
     }
 
     /**
@@ -126,7 +119,7 @@ class UploadedFile implements UploadedFileInterface
             throw new InvalidArgumentException('Specified path is invalid.');
         }
 
-        if (!move_uploaded_file($this->path, $targetPath)) {
+        if (!move_uploaded_file($this->tmpName, $targetPath)) {
             throw new RuntimeException('Failed to move uploaded file.');
         }
 
